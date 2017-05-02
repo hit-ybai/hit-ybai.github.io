@@ -1,87 +1,66 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <title>并发模型学习 (4) | White</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="author" content="Bai, Yu">
   
-    <meta name="author" content="Bai, Yu">
-  
-  
-    <meta name="description" content="哲学家用餐问题（Dining philosophers problem）简单来说：有五个哲学家坐在一张圆桌上，每个人之间放着一只餐叉，这样桌上就有五只餐叉。哲学家只会做两件事，吃饭，或者思考。吃东西的时候，他们就停止思考，思考的时候也停止吃东西。
+  <meta name="description" content="哲学家用餐问题（Dining philosophers problem）简单来说：有五个哲学家坐在一张圆桌上，每个人之间放着一只餐叉，这样桌上就有五只餐叉。哲学家只会做两件事，吃饭，或者思考。吃东西的时候，他们就停止思考，思考的时候也停止吃东西。
 是的，他们每个人都会用到别人用过的餐叉，开不开心。
-这个例子一般用来说明死锁问题，经典的场景之一：一名哲学家拿起了自己左手的餐叉，并为其加锁（以免同时被">
-  
-  <meta name="description" content="哲学家用餐问题（Dining philosophers problem）简单来说：有五个哲学家坐在一张圆桌上，每个人之间放着一只餐叉，这样桌上就有五只餐叉。哲学家只会做两件事，吃饭，或者思考。吃东西的时候，他们就停止思考，思考的时候也停止吃东西。 是的，他们每个人都会用到别人用过的餐叉，开不开心。 这个例子一般用来说明死锁问题，经典的场景之一：一名哲学家拿起了自己左手的餐叉，并为其加锁（以免同时被">
-<meta name="keywords" content="读书报告,并发,并行">
-<meta property="og:type" content="article">
-<meta property="og:title" content="并发模型学习 (4)">
-<meta property="og:url" content="http://www.everkeyword.com/2015/06/22/2015-06-22-seven-concurrency-models-in-seven-weeks-dining-philosophers-problem/index.html">
-<meta property="og:site_name" content="White">
-<meta property="og:description" content="哲学家用餐问题（Dining philosophers problem）简单来说：有五个哲学家坐在一张圆桌上，每个人之间放着一只餐叉，这样桌上就有五只餐叉。哲学家只会做两件事，吃饭，或者思考。吃东西的时候，他们就停止思考，思考的时候也停止吃东西。 是的，他们每个人都会用到别人用过的餐叉，开不开心。 这个例子一般用来说明死锁问题，经典的场景之一：一名哲学家拿起了自己左手的餐叉，并为其加锁（以免同时被">
-<meta property="og:image" content="http://7xjra1.com1.z0.glb.clouddn.com/Dining_philosophers.png">
-<meta property="og:updated_time" content="2017-05-02T14:30:13.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="并发模型学习 (4)">
-<meta name="twitter:description" content="哲学家用餐问题（Dining philosophers problem）简单来说：有五个哲学家坐在一张圆桌上，每个人之间放着一只餐叉，这样桌上就有五只餐叉。哲学家只会做两件事，吃饭，或者思考。吃东西的时候，他们就停止思考，思考的时候也停止吃东西。 是的，他们每个人都会用到别人用过的餐叉，开不开心。 这个例子一般用来说明死锁问题，经典的场景之一：一名哲学家拿起了自己左手的餐叉，并为其加锁（以免同时被">
-<meta name="twitter:image" content="http://7xjra1.com1.z0.glb.clouddn.com/Dining_philosophers.png">
-  
-    <link rel="alternate" href="/atom.xml" title="White" type="application/atom+xml">
+">
   
   
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="并发模型学习 (4)"/>
+  <meta property="og:site_name" content="White"/>
+
   
-  <link rel="stylesheet" href="/css/style.css">
-  <!--[if lt IE 9]><script src="//cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script><![endif]-->
-  
-  
-</head>
-<body>
-  <div class="wrapper">
-    <header id="header">
-  <div class="title">
-    <h1><a href="/">White</a></h1>
-    <p><a href="/">There&#39;s no magic in this world.</a></p>
-  </div>
-  <nav class="nav">
-    <ul>
-      
-        <li><a href="/">Home</a></li>
-      
-        <li><a href="/about">About</a></li>
-      
-        <li><a href="/Links">Links</a></li>
-      
-      
-        <li><a href="/atom.xml">RSS</a></li>
-      
-    </ul>
-    <div class="clearfix"></div>
-  </nav>
-  <div class="clearfix"></div>
-</header>
-    <div class="content"><article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/06/22/2015-06-22-seven-concurrency-models-in-seven-weeks-dining-philosophers-problem/">
-  <time datetime="2015-06-22T03:20:27.000Z">
-    2015-06-22
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title">并发模型学习 (4)</h1>
+    <meta property="og:image" content="undefined"/>
   
 
-  </header>
   
-  <div class="entry">
-    
-      <h4 id="哲学家用餐问题（Dining-philosophers-problem）"><a href="#哲学家用餐问题（Dining-philosophers-problem）" class="headerlink" title="哲学家用餐问题（Dining philosophers problem）"></a><a href="https://zh.wikipedia.org/zh-cn/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%90%E9%97%AE%E9%A2%98" target="_blank" rel="external">哲学家用餐问题（Dining philosophers problem）</a></h4><p>简单来说：有五个哲学家坐在一张圆桌上，每个人之间放着一只餐叉，这样桌上就有五只餐叉。哲学家只会做两件事，吃饭，或者思考。吃东西的时候，他们就停止思考，思考的时候也停止吃东西。<br><img src="http://7xjra1.com1.z0.glb.clouddn.com/Dining_philosophers.png" alt="来自Wikipedia"></p>
+    <link rel="alternative" href="/atom.xml" title="White" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+</head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">White</a><span class="split"></span><span class="title">并发模型学习 (4)</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2015-06-22</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  
+
+  
+	<div class="col-md-12">
+	  
+
+	  <!-- content -->
+	  <h4 id="哲学家用餐问题（Dining-philosophers-problem）"><a href="#哲学家用餐问题（Dining-philosophers-problem）" class="headerlink" title="哲学家用餐问题（Dining philosophers problem）"></a><a href="https://zh.wikipedia.org/zh-cn/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%90%E9%97%AE%E9%A2%98" target="_blank" rel="external">哲学家用餐问题（Dining philosophers problem）</a></h4><p>简单来说：有五个哲学家坐在一张圆桌上，每个人之间放着一只餐叉，这样桌上就有五只餐叉。哲学家只会做两件事，吃饭，或者思考。吃东西的时候，他们就停止思考，思考的时候也停止吃东西。<br><img src="http://7xjra1.com1.z0.glb.clouddn.com/Dining_philosophers.png" alt="来自Wikipedia"></p>
 <p>是的，他们每个人都会用到别人用过的餐叉，开不开心。</p>
 <p>这个例子一般用来说明死锁问题，经典的场景之一：一名哲学家拿起了自己左手的餐叉，并为其加锁（以免同时被自己左边的哲学家拿到），而后等待自己右手的餐叉锁的释放。</p>
 <p>然而，如果五个哲学家同时处于这个状态，就会死锁。</p>
@@ -93,161 +72,190 @@
 <p><code>Philosopher.java</code><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Philosopher</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</div><div class="line">    <span class="keyword">private</span> Chopstick first, secound;</div><div class="line">    <span class="keyword">private</span> Random random;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Philosopher</span><span class="params">(Chopstick left, Chopstick right, <span class="keyword">int</span> id)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.id = id;</div><div class="line">        <span class="keyword">if</span> (left.getId() &lt; right.getId()) &#123;</div><div class="line">            <span class="keyword">this</span>.first = left; <span class="keyword">this</span>.second = right;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">this</span>.first = right; <span class="keyword">this</span>.second = left;</div><div class="line">        &#125;</div><div class="line">        random = <span class="keyword">new</span> Random();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">                Thread.sleep(random.nextInt(<span class="number">1000</span>));</div><div class="line">                <span class="keyword">synchronized</span>(first) &#123;</div><div class="line">                    System.out.println(<span class="string">"Philosopher#"</span> + id + <span class="string">" take Chopstick#"</span> + first.getId());</div><div class="line"></div><div class="line">                    <span class="keyword">synchronized</span>(second) &#123;</div><div class="line">                        System.out.println( <span class="string">"Philosopher#"</span> +</div><div class="line">                            id +<span class="string">" take Chopstick#"</span> + second.getId() );</div><div class="line">                        Thread.sleep( random.nextInt(<span class="number">1000</span>) );</div><div class="line">                    &#125;</div><div class="line">                    System.out.println(<span class="string">"Philosopher#"</span> + id + <span class="string">" put Chopstick#"</span> + second.getId());</div><div class="line">                &#125;</div><div class="line">                System.out.println(<span class="string">"Philosopher#"</span> + id + <span class="string">" put Chopstick#"</span> + first.getId());</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h4 id="外星方法"><a href="#外星方法" class="headerlink" title="外星方法"></a>外星方法</h4><p>这里我们构造有一个类从一个URL进行下载, 用<code>ProgressListeners</code>监听下载速度<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Downloader</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> InputStream in;</div><div class="line">    <span class="keyword">private</span> OutputStream out;</div><div class="line">    <span class="keyword">private</span> ArrayList&lt;ProgressListener&gt; listeners;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Downloader</span><span class="params">(URL url, String outputFilename)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        in = url.openConnect().getInputSteam();</div><div class="line">        out = <span class="keyword">new</span> FileOutputStream(outputFilename);</div><div class="line">        listeners = <span class="keyword">new</span> ArrayList&lt;ProgressListener&gt;();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">addListener</span><span class="params">(ProgressListener listener)</span> </span>&#123;</div><div class="line">        listeners.add(listener);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">removeListener</span><span class="params">(ProgressListener listener)</span> </span>&#123;</div><div class="line">        listeners.remove(listener);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">updateProgress</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">        <span class="keyword">for</span> (ProgressListener listener: listeners)</div><div class="line">            listener.onProgress(n);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> n = <span class="number">0</span>, total = <span class="number">0</span>;</div><div class="line">        <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">while</span> ( (n = in.read(buffer)) != -<span class="number">1</span> ) &#123;</div><div class="line">                out.write(buffer, <span class="number">0</span>, n);</div><div class="line">                total += n;</div><div class="line">                updateProgress(total);</div><div class="line">            &#125;</div><div class="line">            out.flush();</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p><em>未完待续</em></p>
+	  
 
-    
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+	
+	
+		<li class="prev"><a href="/2015/06/24/2015-06-24-charlie-munger-on-the-psychology-of-human-misjudgment-one/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2015/06/21/2015-06-21-seven-concurrency-models-in-seven-weeks-memory-visibility/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
   </div>
-  <footer>
-    
-      
-  <div class="categories">
-    <a class="categories-link" href="/categories/读书报告/">读书报告</a>
-  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2017 Bai, Yu
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
 
-      
-  <div class="tags">
-    <a class="tags-link" href="/tags/并发/">并发</a>, <a class="tags-link" href="/tags/并行/">并行</a>, <a class="tags-link" href="/tags/读书报告/">读书报告</a>
-  </div>
-
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-<section id="comment">
-  <h1 class="title">Comments</h1>
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
-</section>
-</div>
-  </div>
-  
-  <div id="sidebar" class="widgets-bottom">
-  
-<div class="widget category">
-  <h3 class="title">categories</h3>
-  <ul class="entry">
-  
-    <li><a href="/categories/开发工具/">开发工具</a><small>2</small></li>
-  
-    <li><a href="/categories/技术日志/">技术日志</a><small>2</small></li>
-  
-    <li><a href="/categories/流程方法/">流程方法</a><small>1</small></li>
-  
-    <li><a href="/categories/程序开发/">程序开发</a><small>6</small></li>
-  
-    <li><a href="/categories/解题报告/">解题报告</a><small>3</small></li>
-  
-    <li><a href="/categories/读书报告/">读书报告</a><small>13</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tagcloud">
-  <h3 class="title">tagcloud</h3>
-  <div class="entry">
-    <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/activemq/" style="font-size: 10px;">activemq</a> <a href="/tags/c/" style="font-size: 18px;">c++</a> <a href="/tags/c-primer-plus/" style="font-size: 18px;">c++ primer plus</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/dispatcher/" style="font-size: 10px;">dispatcher</a> <a href="/tags/gitcafe/" style="font-size: 10px;">gitcafe</a> <a href="/tags/hash/" style="font-size: 12px;">hash</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/tags/leetcode/" style="font-size: 14px;">leetcode</a> <a href="/tags/linked-list/" style="font-size: 10px;">linked list</a> <a href="/tags/octopress/" style="font-size: 10px;">octopress</a> <a href="/tags/rails/" style="font-size: 18px;">rails</a> <a href="/tags/rake/" style="font-size: 10px;">rake</a> <a href="/tags/route/" style="font-size: 10px;">route</a> <a href="/tags/ruby/" style="font-size: 10px;">ruby</a> <a href="/tags/tree/" style="font-size: 10px;">tree</a> <a href="/tags/unicorn/" style="font-size: 10px;">unicorn</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/学习报告/" style="font-size: 16px;">学习报告</a> <a href="/tags/工作经验/" style="font-size: 10px;">工作经验</a> <a href="/tags/并发/" style="font-size: 16px;">并发</a> <a href="/tags/并行/" style="font-size: 16px;">并行</a> <a href="/tags/心理/" style="font-size: 14px;">心理</a> <a href="/tags/读书报告/" style="font-size: 20px;">读书报告</a>
-  </div>
-</div>
-
-
-  
-<div class="widget tag">
-  <h3 class="title">recent_posts</h3>
-  <ul class="entry">
-    
-      <li>
-        <a href="/2016/05/18/2016-05-18-charlie-munger-on-the-psychology-of-human-misjudgment-three/">人类误判心理（3）</a>
-      </li>
-    
-      <li>
-        <a href="/2015/11/13/2015-11-13-the-core-value-of-sde/">软件工程师的核心价值</a>
-      </li>
-    
-      <li>
-        <a href="/2015/10/15/2015-10-15-b-tree/">B-Tree</a>
-      </li>
-    
-      <li>
-        <a href="/2015/06/28/2015-06-26-rails-request-to-response-two/">[Rails] 从Request到Response（2）</a>
-      </li>
-    
-      <li>
-        <a href="/2015/06/26/2015-06-26-rails-request-to-response-one/">[Rails] 从Request到Response（1）</a>
-      </li>
-    
-  </ul>
-</div>
-
-</div>
-  
-  <footer id="footer"><div class="copyright">
-  
-  &copy; 2017 <a href="/">Bai, Yu</a>
-  
-</div>
-<div class="theme-copyright">
-  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
-   | 
-  Redesign by <a href="http://blog.dafengning.com/" target="_blank">Chong Zi</a>
-</div>
-<div class="clearfix"></div></footer>
-  <script src="//lib.sinaapp.com/js/jquery/1.8/jquery.min.js"></script>
-<script src="/js/scale.fix.js"></script>
 <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
 
 
 <script type="text/javascript">
-  var disqus_shortname = 'everkeyword';
+var disqus_shortname = 'everkeyword';
 
-  (function(){
-    var dsq = document.createElement('script');
-    dsq.type = 'text/javascript';
-    dsq.async = true;
-    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  }());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
 </script>
 
-
-<div id="rightfix" style="display:none;">
-
-
-<a href="javascript:void(0)" id="gotop" class="fix_btn" onclick="gotop();" title="回到顶部"><i></i></a>
-<script>
-  function gotop(){
-    $('html,body').animate({
-        scrollTop : '0px'
-      }, 800);
-  }
-  $(function(){
-    _rightfix = $('#rightfix');
-    $(window).scroll(function(){
-      $sollTop = document.documentElement.scrollTop + document.body.scrollTop;
-      if($sollTop > 350){
-        _rightfix.show();
-      }else{
-        _rightfix.hide();
-      }
-    });
-  });
-</script>
-
-</div>
 
 
 <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
 <script src="/fancybox/jquery.fancybox.pack.js"></script>
 <script type="text/javascript">
-  (function($){
-    $('.fancybox').fancybox();
-  })(jQuery);
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
 </script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
 
 </body>
 </html>
