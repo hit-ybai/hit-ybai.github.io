@@ -1,0 +1,283 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>[Rails] 从Request到Response（1） | White</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="Bai, Yu">
+  
+  
+    <meta name="description" content="本文翻译自：Rails from Request to Response 系列；个人选择了自己感兴趣的部分进行翻译，需要阅读原文的同学请戳前面的链接。
+第一部分 导言（Introduction）服务器在讲 Rails 调用栈之前，先简单介绍一下不同服务器应用的作用，其中并不会涉及到各个服务器应用（比如Thin和Unicorn或Nginx）的细节，因为文章的重点是讲 Rails 端的一些东西。
+这里">
+  
+  <meta name="description" content="本文翻译自：Rails from Request to Response 系列；个人选择了自己感兴趣的部分进行翻译，需要阅读原文的同学请戳前面的链接。 第一部分 导言（Introduction）服务器在讲 Rails 调用栈之前，先简单介绍一下不同服务器应用的作用，其中并不会涉及到各个服务器应用（比如Thin和Unicorn或Nginx）的细节，因为文章的重点是讲 Rails 端的一些东西。 这里">
+<meta name="keywords" content="rails,学习报告,rake,unicorn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Rails] 从Request到Response（1）">
+<meta property="og:url" content="http://www.everkeyword.com/2015/06/26/2015-06-26-rails-request-to-response-one/index.html">
+<meta property="og:site_name" content="White">
+<meta property="og:description" content="本文翻译自：Rails from Request to Response 系列；个人选择了自己感兴趣的部分进行翻译，需要阅读原文的同学请戳前面的链接。 第一部分 导言（Introduction）服务器在讲 Rails 调用栈之前，先简单介绍一下不同服务器应用的作用，其中并不会涉及到各个服务器应用（比如Thin和Unicorn或Nginx）的细节，因为文章的重点是讲 Rails 端的一些东西。 这里">
+<meta property="og:image" content="http://7xjra1.com1.z0.glb.clouddn.com/unicorn_architecture.png">
+<meta property="og:updated_time" content="2017-05-02T14:00:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Rails] 从Request到Response（1）">
+<meta name="twitter:description" content="本文翻译自：Rails from Request to Response 系列；个人选择了自己感兴趣的部分进行翻译，需要阅读原文的同学请戳前面的链接。 第一部分 导言（Introduction）服务器在讲 Rails 调用栈之前，先简单介绍一下不同服务器应用的作用，其中并不会涉及到各个服务器应用（比如Thin和Unicorn或Nginx）的细节，因为文章的重点是讲 Rails 端的一些东西。 这里">
+<meta name="twitter:image" content="http://7xjra1.com1.z0.glb.clouddn.com/unicorn_architecture.png">
+  
+    <link rel="alternate" href="/atom.xml" title="White" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script><![endif]-->
+  
+  
+</head>
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">White</a></h1>
+    <p><a href="/">There&#39;s no magic in this world.</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/06/26/2015-06-26-rails-request-to-response-one/">
+  <time datetime="2015-06-26T10:55:27.000Z">
+    2015-06-26
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">[Rails] 从Request到Response（1）</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p><em>本文翻译自：<a href="http://andrewberls.com/blog/post/rails-from-request-to-response-part-1--introduction" target="_blank" rel="external">Rails from Request to Response 系列</a>；个人选择了自己感兴趣的部分进行翻译，需要阅读原文的同学请戳前面的链接。</em></p>
+<h2 id="第一部分-导言（Introduction）"><a href="#第一部分-导言（Introduction）" class="headerlink" title="第一部分 导言（Introduction）"></a>第一部分 导言（Introduction）</h2><h3 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h3><p>在讲 Rails 调用栈之前，先简单介绍一下不同服务器应用的作用，其中并不会涉及到各个服务器应用（比如<code>Thin</code>和<code>Unicorn</code>或<code>Nginx</code>）的细节，因为文章的重点是讲 Rails 端的一些东西。</p>
+<p>这里举一个<code>Unicorn</code>的简单例子，管窥整个 Rails 应用。</p>
+<h3 id="Unicorn架构"><a href="#Unicorn架构" class="headerlink" title="Unicorn架构"></a>Unicorn架构</h3><p><code>Unicorn</code>是一个实现了<a href="http://rack.github.io/" target="_blank" rel="external">Rack</a>接口的服务器应用，通过多个<code>Worker</code>并行处理请求（request）。启动时，主进程会将 Rails App 代码加在到内存中，随后以加载进来内存为原料进行复制，生成一定数量的<code>Worker</code>，并对他们进行监控和信号捕获（比如被用作关闭和重启的QUIT，TERM，USR1信号等等）。这些<code>Worker</code>负责处理的一个个真实的Web请求（request）。</p>
+<p>下图是<code>Unicorn</code>的架构（<a href="https://github.com/blog/517-unicorn" target="_blank" rel="external">这幅图片</a>来自Github一篇很棒的文章）：<br><img src="http://7xjra1.com1.z0.glb.clouddn.com/unicorn_architecture.png" alt="Unicorn Architecture"></p>
+<p>这些<code>Worker</code>从共享的<code>Socket</code>中读取HTTP请求（request），并将它们发给Rails应用。随后得到响应（response），写回到共享的<code>Socket</code>中。这个过程中的大部份都发生在Unicorn<code>HttpServer</code>类的<code>#process_client</code>方法中，下面是相关部分的代码：<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># unicorn/lib/unicorn/http_server.rb</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">process_client</span><span class="params">(client)</span></span></div><div class="line">  status, headers, body = @app.call(env = @request.read(client))</div><div class="line"></div><div class="line">  ...</div><div class="line"></div><div class="line">  http_response_write(client, status, headers, body,</div><div class="line">                      @request.response_start_sent)</div><div class="line"></div><div class="line">  client.shutdown</div><div class="line">  client.close</div><div class="line"><span class="keyword">rescue</span> =&gt; e</div><div class="line">  handle_error(client, e)</div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure></p>
+<p><em>其中省略了一些关于<a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.1.1" target="_blank" rel="external">HTTP 100</a>状态处理和<a href="http://blog.phusion.nl/2013/01/23/the-new-rack-socket-hijacking-api/" target="_blank" rel="external">Rack socket hijacking</a>相关的代码，感兴趣的话可以阅读<a href="https://github.com/defunkt/unicorn/blob/728b2c70cda7787a80303c6fa2c2530dcb490c90/lib/unicorn/http_server.rb#L570" target="_blank" rel="external">完整版本</a>。</em></p>
+<p>我们可以看到，这个方法的核心逻辑相当的简明！</p>
+<p>第一行是<a href="https://github.com/rack/rack/blob/master/SPEC" target="_blank" rel="external">Rack specification</a>：Rake App 其实就是一个 Ruby Object，我们只需要为它写一个可以接受 hash 参数<code>env</code>的<code>#call</code>方法，让它的返回<code>[status, headers, body]</code>（译者：还不是很明白<code>Rake</code>是什么鬼的同学可以去看一下这个<a href="http://railscasts-china.com/episodes/the-rails-initialization-process-by-kenshin54" target="_blank" rel="external">视频</a>，亲测好评）。</p>
+<p>这个就是<code>Rails</code>，<code>Sinatra</code>，<code>Padrino</code>等那些兼容了Rake接口的框架的核心。回到<code>#process_client</code>方法，可以看到，我们向<code>@app</code>的<code>#call</code>方法传递 env 参数，并在 client 关闭之前，将响应（response）写回。</p>
+<p>你没猜错，这个<code>@app</code>就是我们的 Rails 项目，我们来看他的声明：<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># blog/config/application.rb</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">module</span> <span class="title">Blog</span></span></div><div class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Application</span> &lt; Rails::Application</span></div><div class="line">    ...</div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure></p>
+<p>这就是 Rails 调用栈的入口，但是如果你仔细观察，你会发现<code>#call</code>并没有定义在<code>Blog::Application</code>，而是被声明在了父类<code>Rails::Application</code>中。</p>
+<p>现在开始，我们需要了解 Rails 应用的继承机制，以及一个请求（request）是如何在 Rails 内部被处理的。</p>
+<h3 id="Rails-Application-and-Engines"><a href="#Rails-Application-and-Engines" class="headerlink" title="Rails Application and Engines"></a>Rails Application and Engines</h3><p>我们之前提到，整个 Rails 应用的入口<code>#call</code>被定义在了<code>Rails::Application</code>中，我们通过继承来使用它。这里是它的定义（<a href="https://github.com/rails/rails/blob/0dea33f770305f32ed7476f520f7c1ff17434fdc/railties/lib/rails/application.rb#L139" target="_blank" rel="external">源码</a>）：<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rails/railties/lib/rails/application.rb</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">module</span> <span class="title">Rails</span></span></div><div class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Application</span> &lt; Engine</span></div><div class="line"></div><div class="line">    <span class="comment"># Implements call according to the Rack API. It simply</span></div><div class="line">    <span class="comment"># dispatches the request to the underlying middleware stack.</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(env)</span></span></div><div class="line">      env[<span class="string">"ORIGINAL_FULLPATH"</span>] = build_original_fullpath(env)</div><div class="line">      env[<span class="string">"ORIGINAL_SCRIPT_NAME"</span>] = env[<span class="string">"SCRIPT_NAME"</span>]</div><div class="line">      <span class="keyword">super</span>(env)</div><div class="line">    <span class="keyword">end</span></div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure></p>
+<p>这里并没有什么东西，大部分功能通过调用<code>super</code>来执行。如果我们跟着代码看，可以发现<code>Rails::Application</code>类继承于<code>Rails::Engine</code>类。如果你熟悉<a href="http://edgeguides.rubyonrails.org/engines.html" target="_blank" rel="external">Rails engines</a>，你会惊喜地发现，<code>Rails::Application</code>就是一个超级<code>engine</code>!</p>
+<p>我们来看看<code>Engine</code>类中的<code>#call</code>方法：<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rails/railties/lib/rails/engine.rb</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">module</span> <span class="title">Rails</span></span></div><div class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Engine</span> &lt; Railtie</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(env)</span></span></div><div class="line">      env.merge!(env_config)</div><div class="line">      <span class="keyword">if</span> env[<span class="string">'SCRIPT_NAME'</span>]</div><div class="line">        env.merge! <span class="string">"ROUTES_<span class="subst">#&#123;routes.object_id&#125;</span>_SCRIPT_NAME"</span> =&gt; env[<span class="string">'SCRIPT_NAME'</span>].dup</div><div class="line">      <span class="keyword">end</span></div><div class="line">      app.call(env)</div><div class="line">    <span class="keyword">end</span></div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure></p>
+<p>所以，<code>Engine</code>类继承于<code>Rails::Railtie</code>。通过观察<a href="https://github.com/rails/rails/blob/0dea33f770305f32ed7476f520f7c1ff17434fdc/railties/lib/rails/railtie.rb" target="_blank" rel="external">源码</a>，我们可以发现Railtie是Rails框架的核心，他为<code>initializers</code>，<code>config keys</code>，<code>generators</code>和<code>rake tasks</code>等提供钩子方法。</p>
+<p>所有Rails的主要部件（<code>ActionMailer</code>，<code>ActionView</code>，<code>ActionController</code>和<code>ActiveRecord</code>）都是一个<code>Railtie</code>，这也就是为什么你可以随意拆装组合这些部件。</p>
+<p>在<code>Engine</code>的<code>#call</code>方法中我们看到了<code>#call</code>的另一个代理方法（delegation），这里的<code>app</code>代表的是什么？在同一个文件中，我们发现了他的定义：<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># rails/railties/lib/rails/engine.rb</span></div><div class="line"></div><div class="line"><span class="comment"># Returns the underlying rack application for this engine.</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">app</span></span></div><div class="line">  @app <span class="params">||</span>= <span class="keyword">begin</span></div><div class="line">    config.middleware = config.middleware.merge_into(default_middleware_stack)</div><div class="line">    config.middleware.build(endpoint)</div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure></p>
+<p>现在我们到了一个牛逼的位置。这个engine构造了一个类似Rack application的中间件，并将<code>#call</code>方法代理（delegate）给它，他的终点是我们应用的<code>routes</code>，<code>ActionDispatch::Routing::RouteSet</code>类的一个实例。</p>
+<p>Rack middleware可以用来「过滤」请求（request）和响应（response），并且可以将一个请求（request）处理过程分解成多个步骤，并视为一个「管道」进行处理，比如：处理权限认证，缓存等等。</p>
+<p>你可以通过执行<code>rake middleware</code>来列出一个应用所使用的全部中间件。这里是我对 Blog 应用执行这条指令所得到的结果：<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">$ RAILS_ENV=production rake middleware</div><div class="line">use Rack::Sendfile</div><div class="line">use #<span class="xml"><span class="tag">&lt;<span class="name">ActiveSupport::Cache::Strategy::LocalCache::Middleware:0x007f7ffb206f20</span>&gt;</span></span></div><div class="line">use Rack::Runtime</div><div class="line">use Rack::MethodOverride</div><div class="line">use ActionDispatch::RequestId</div><div class="line">use Rails::Rack::Logger</div><div class="line">use ActionDispatch::ShowExceptions</div><div class="line">use ActionDispatch::DebugExceptions</div><div class="line">use ActionDispatch::RemoteIp</div><div class="line">use ActionDispatch::Callbacks</div><div class="line">use ActiveRecord::ConnectionAdapters::ConnectionManagement</div><div class="line">use ActiveRecord::QueryCache</div><div class="line">use ActionDispatch::Cookies</div><div class="line">use ActionDispatch::Session::CookieStore</div><div class="line">use ActionDispatch::Flash</div><div class="line">use ActionDispatch::ParamsParser</div><div class="line">use Rack::Head</div><div class="line">use Rack::ConditionalGet</div><div class="line">use Rack::ETag</div><div class="line">run Blog::Application.routes</div></pre></td></tr></table></figure></p>
+<p>其中的大部分都不会讲，因为没有必要去了解全部这些中间件，即使一个请求（request），在到达<code>Blog::Application.routes</code>之前，会途径列表中从上到下所有的中间件。</p>
+<p>到这里，我们已经完成了<code>App server / Rails application stack</code>的导言部分的介绍，接下来会着重介绍<code>Rails routing / dispatch stack</code>。</p>
+<h3 id="译者总结"><a href="#译者总结" class="headerlink" title="译者总结"></a>译者总结</h3><p>我们可以讲<code>rake app</code>简化地表示为一个函数：</p>
+<blockquote>
+<p>ƒ: <em>env_set</em> → <em>{ [status, headers, body] }</em></p>
+</blockquote>
+<p><code>Rails app</code>其实就是若干个函数的嵌套，逐层对输入的<code>env</code>和返回<code>[status, headers, body]</code>进行加工。整个Rails的执行过程，不过如此。</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">env</span>(<span class="number">1</span>) → <span class="keyword">env</span>(<span class="number">2</span>) → ... → <span class="keyword">env</span>(i) → ... <span class="keyword">env</span>(n)</div></pre></td></tr></table></figure>
+<p>令：<code>s: [status, headers, body]</code><br><figure class="highlight erlang"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">s</span><span class="params">(n)</span> → <span class="title">s</span><span class="params">(n-<span class="number">1</span>)</span> → ... → <span class="title">s</span><span class="params">(i)</span> → ... <span class="title">s</span><span class="params">(<span class="number">1</span>)</span></span></div></pre></td></tr></table></figure></p>
+<p>看完这篇文章后，终于理解了<a href="http://robbinfan.com/blog/40/ruby-off-rails" target="_blank" rel="external">《Ruby社区应该去Rails化了》</a>中这段话的意思：</p>
+<blockquote>
+<h3 id="Rails为何不适合做Web-Service"><a href="#Rails为何不适合做Web-Service" class="headerlink" title="Rails为何不适合做Web Service?"></a>Rails为何不适合做Web Service?</h3><p>我发现了一个有意思的现象，最早的一批用Ruby开发Web Service服务的网站，都选择了用Rails开发，而在最近几年又不约而同抛弃Rails重写Web服务框架。当初用Rails的原因很简单，因为产品早期起步，不确定性很高，使用Rails快速开发，可以最大限度节约开发成本和时间。但为何当请求量变大以后，Rails不再适合了呢？</p>
+<p>这主要是因为Rails本身是一个full-stack的Web框架，所有的设计目标就是为了开发Website，所以Rails框架封装过于厚重，对于需要更高性能更轻薄的Web Service应用场景来说，暴露出来了很多缺陷：</p>
+<h4 id="Rails调用堆栈过深，URL请求处理性能很差"><a href="#Rails调用堆栈过深，URL请求处理性能很差" class="headerlink" title="Rails调用堆栈过深，URL请求处理性能很差"></a>Rails调用堆栈过深，URL请求处理性能很差</h4><p>Rails的设计目标是提供Web开发的 最佳实践 ，所以无论你需要不需要，Rails默认提供了开发Website所有可能的组件，但其中绝大部分你可能一辈子都用不上。例如Rails项目默认添加了20个middleware，但其中10个都是可以去掉的，我们自己的项目当中手工删除了这些middleware：</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">config.middleware.delete <span class="string">'Rack::Cache'</span>   <span class="comment"># 整页缓存，用不上</span></div><div class="line">config.middleware.delete <span class="string">'Rack::Lock'</span>    <span class="comment"># 多线程加锁，多进程模式下无意义</span></div><div class="line">config.middleware.delete <span class="string">'Rack::Runtime'</span> <span class="comment"># 记录X-Runtime（方便客户端查看执行时间）</span></div><div class="line">config.middleware.delete <span class="string">'ActionDispatch::RequestId'</span> <span class="comment"># 记录X-Request-Id（方便查看请求在群集中的哪台执行）</span></div><div class="line">config.middleware.delete <span class="string">'ActionDispatch::RemoteIp'</span>  <span class="comment"># IP SpoofAttack</span></div><div class="line">config.middleware.delete <span class="string">'ActionDispatch::Callbacks'</span> <span class="comment"># 在请求前后设置callback</span></div><div class="line">config.middleware.delete <span class="string">'ActionDispatch::Head'</span>      <span class="comment"># 如果是HEAD请求，按照GET请求执行，但是不返回body</span></div><div class="line">config.middleware.delete <span class="string">'Rack::ConditionalGet'</span>      <span class="comment"># HTTP客户端缓存才会使用</span></div><div class="line">config.middleware.delete <span class="string">'Rack::ETag'</span>    <span class="comment"># HTTP客户端缓存才会使用</span></div><div class="line">config.middleware.delete <span class="string">'ActionDispatch::BestStandardsSupport'</span> <span class="comment"># 设置X-UA-Compatible, 在nginx上设置</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>其中最夸张的是ActionDispatch::RequestIdmiddleware，只有在大型应用部署在群集环境下进行线上调试才可能用到的功能，有什么必要做成默认的功能呢？ Rails的哲学是：提供最全的功能集给你，如果你用不到，你自己手工一个一个关闭掉 ，但是这样带来的结果就是默认带了太多不必要的冗余功能，造成性能损耗极大。</p>
+<p>我们看一个Ruby web框架请求处理性能评测 ，这个评测不访问数据库，也不测试并发性能，主要是测试框架处理URL请求路由，渲染文本，返回结果的处理速度。</p>
+<p>Rack: 1570.43 request/s<br>Campig: 1166.16 request/s<br>Sinatra: 912.81 request/s<br>Padrino: 648.68 request/s<br>Rails: 291.27 request/s</p>
+<p>Sinatra至少是Rails速度的3倍以上。</p>
+</blockquote>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/程序开发/">程序开发</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/rails/">rails</a>, <a class="tags-link" href="/tags/rake/">rake</a>, <a class="tags-link" href="/tags/unicorn/">unicorn</a>, <a class="tags-link" href="/tags/学习报告/">学习报告</a>
+  </div>
+
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div>
+  </div>
+  
+  <div id="sidebar" class="widgets-bottom">
+  
+<div class="widget category">
+  <h3 class="title">categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/开发工具/">开发工具</a><small>2</small></li>
+  
+    <li><a href="/categories/技术日志/">技术日志</a><small>2</small></li>
+  
+    <li><a href="/categories/流程方法/">流程方法</a><small>3</small></li>
+  
+    <li><a href="/categories/程序开发/">程序开发</a><small>6</small></li>
+  
+    <li><a href="/categories/解题报告/">解题报告</a><small>3</small></li>
+  
+    <li><a href="/categories/读书报告/">读书报告</a><small>14</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">tagcloud</h3>
+  <div class="entry">
+    <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/activemq/" style="font-size: 10px;">activemq</a> <a href="/tags/c/" style="font-size: 18px;">c++</a> <a href="/tags/c-primer-plus/" style="font-size: 18px;">c++ primer plus</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/dispatcher/" style="font-size: 10px;">dispatcher</a> <a href="/tags/gitcafe/" style="font-size: 10px;">gitcafe</a> <a href="/tags/hash/" style="font-size: 12px;">hash</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/tags/leetcode/" style="font-size: 14px;">leetcode</a> <a href="/tags/linked-list/" style="font-size: 10px;">linked list</a> <a href="/tags/octopress/" style="font-size: 10px;">octopress</a> <a href="/tags/rails/" style="font-size: 18px;">rails</a> <a href="/tags/rake/" style="font-size: 10px;">rake</a> <a href="/tags/route/" style="font-size: 10px;">route</a> <a href="/tags/ruby/" style="font-size: 10px;">ruby</a> <a href="/tags/tree/" style="font-size: 10px;">tree</a> <a href="/tags/unicorn/" style="font-size: 10px;">unicorn</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/学习报告/" style="font-size: 16px;">学习报告</a> <a href="/tags/工作经验/" style="font-size: 10px;">工作经验</a> <a href="/tags/并发/" style="font-size: 16px;">并发</a> <a href="/tags/并行/" style="font-size: 16px;">并行</a> <a href="/tags/心理/" style="font-size: 14px;">心理</a> <a href="/tags/读书报告/" style="font-size: 20px;">读书报告</a>
+  </div>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">recent_posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2017/04/16/2017-04-16-recent-thinking/">記錄最近的所思所想</a>
+      </li>
+    
+      <li>
+        <a href="/2016/12/28/2016-12-28-2016/">二零一六</a>
+      </li>
+    
+      <li>
+        <a href="/2016/11/11/2016-11-11-cpp-brief-history/">C++ 简史</a>
+      </li>
+    
+      <li>
+        <a href="/2016/05/18/2016-05-18-charlie-munger-on-the-psychology-of-human-misjudgment-three/">人类误判心理（3）</a>
+      </li>
+    
+      <li>
+        <a href="/2015/11/13/2015-11-13-the-core-value-of-sde/">软件工程师的核心价值</a>
+      </li>
+    
+  </ul>
+</div>
+
+</div>
+  
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2017 <a href="/">Bai, Yu</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://blog.dafengning.com/" target="_blank">Chong Zi</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//lib.sinaapp.com/js/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var disqus_shortname = 'everkeyword';
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  }());
+</script>
+
+
+<div id="rightfix" style="display:none;">
+
+
+<a href="javascript:void(0)" id="gotop" class="fix_btn" onclick="gotop();" title="回到顶部"><i></i></a>
+<script>
+  function gotop(){
+    $('html,body').animate({
+        scrollTop : '0px'
+      }, 800);
+  }
+  $(function(){
+    _rightfix = $('#rightfix');
+    $(window).scroll(function(){
+      $sollTop = document.documentElement.scrollTop + document.body.scrollTop;
+      if($sollTop > 350){
+        _rightfix.show();
+      }else{
+        _rightfix.hide();
+      }
+    });
+  });
+</script>
+
+</div>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

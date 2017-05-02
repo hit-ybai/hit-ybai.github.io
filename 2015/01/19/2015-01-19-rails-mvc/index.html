@@ -1,0 +1,252 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>[Rails] 所谓MVC | White</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="Bai, Yu">
+  
+  
+    <meta name="description" content="使用MVC的Web开发框架有很多，比如PHP的Zend，Python的Django和Golang的Beego。这篇文章主要介绍一下MVC的基本概念。
+何为MVC为了明确一个Web Application中各个部分的职责，我们人为规定三个层级：控制器（Controller），模型（Model）和视图（View），这是一种设计上的解耦。
+为了直观地解释这三个层级的概念，我们假设这它们分别对应代码层面的">
+  
+  <meta name="description" content="使用MVC的Web开发框架有很多，比如PHP的Zend，Python的Django和Golang的Beego。这篇文章主要介绍一下MVC的基本概念。 何为MVC为了明确一个Web Application中各个部分的职责，我们人为规定三个层级：控制器（Controller），模型（Model）和视图（View），这是一种设计上的解耦。 为了直观地解释这三个层级的概念，我们假设这它们分别对应代码层面的">
+<meta name="keywords" content="rails,学习报告,MVC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Rails] 所谓MVC">
+<meta property="og:url" content="http://www.everkeyword.com/2015/01/19/2015-01-19-rails-mvc/index.html">
+<meta property="og:site_name" content="White">
+<meta property="og:description" content="使用MVC的Web开发框架有很多，比如PHP的Zend，Python的Django和Golang的Beego。这篇文章主要介绍一下MVC的基本概念。 何为MVC为了明确一个Web Application中各个部分的职责，我们人为规定三个层级：控制器（Controller），模型（Model）和视图（View），这是一种设计上的解耦。 为了直观地解释这三个层级的概念，我们假设这它们分别对应代码层面的">
+<meta property="og:updated_time" content="2017-05-02T13:45:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Rails] 所谓MVC">
+<meta name="twitter:description" content="使用MVC的Web开发框架有很多，比如PHP的Zend，Python的Django和Golang的Beego。这篇文章主要介绍一下MVC的基本概念。 何为MVC为了明确一个Web Application中各个部分的职责，我们人为规定三个层级：控制器（Controller），模型（Model）和视图（View），这是一种设计上的解耦。 为了直观地解释这三个层级的概念，我们假设这它们分别对应代码层面的">
+  
+    <link rel="alternate" href="/atom.xml" title="White" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script><![endif]-->
+  
+  
+</head>
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">White</a></h1>
+    <p><a href="/">There&#39;s no magic in this world.</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/01/19/2015-01-19-rails-mvc/">
+  <time datetime="2015-01-19T06:55:27.000Z">
+    2015-01-19
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">[Rails] 所谓MVC</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>使用<code>MVC</code>的Web开发框架有很多，比如<code>PHP</code>的<code>Zend</code>，<code>Python</code>的<code>Django</code>和<code>Golang</code>的<code>Beego</code>。这篇文章主要介绍一下<code>MVC</code>的基本概念。</p>
+<h2 id="何为MVC"><a href="#何为MVC" class="headerlink" title="何为MVC"></a>何为MVC</h2><p>为了明确一个<code>Web Application</code>中各个部分的职责，我们人为规定三个层级：控制器（Controller），模型（Model）和视图（View），这是一种设计上的解耦。</p>
+<p>为了直观地解释这三个层级的概念，我们假设这它们分别对应代码层面的三个类：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooModel</span></span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooView</span></span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooController</span></span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<h4 id="调度器（Controller）-–-完整的request生命周期"><a href="#调度器（Controller）-–-完整的request生命周期" class="headerlink" title="调度器（Controller） – 完整的request生命周期"></a>调度器（Controller） – 完整的request生命周期</h4><p>我们可以简单的理解为：用户在浏览器上输入的每个合法的URL，都将被映射到Controller类上的一个实例方法。该实例方法是一次<code>request</code>的<strong>入口</strong>，负责调度程序的各个部分，返回<code>web response</code>给浏览器。</p>
+<p>所谓入口，指的是一次访问的<b>整个生命周期，都随着这个方法的开始而开始，结束而结束。</b>从这个角度来看，我们完全可以不使用模型和视图，就能完成一个Web应用。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Rails中URL和实例方法的映射关系在routes.rb中设置</span></div><div class="line"><span class="comment"># 比如 '/index' =&gt; Controller#index 可以规定:</span></div><div class="line"><span class="comment">#   当用户在browser中输入"http://yoursiteurl.com/index"时</span></div><div class="line"><span class="comment">#   执行Controller类的index方法</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooController</span></span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">index</span></span></div><div class="line">    @counter = @counter ? @counter + <span class="number">1</span> : <span class="number">0</span> </div><div class="line"></div><div class="line">    render <span class="symbol">html:</span> <span class="string">"&lt;p&gt;你是该网站的第<span class="subst">#&#123;@counter&#125;</span>名访客&lt;/p&gt;"</span>.html_safe</div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<h4 id="模型（Model）-–-数据持久化存储"><a href="#模型（Model）-–-数据持久化存储" class="headerlink" title="模型（Model） – 数据持久化存储"></a>模型（Model） – 数据持久化存储</h4><p>我们可以看到，在一次request结束后，Controller实例方法中分配的内存会被回收，无法再次被使用。为了能够将Controller处理过程中的数据在今后继续使用，我们需要对这部分数据进行持久化存储。</p>
+<p>所以我们期望有一个类，他的所有变量都永远不会消失。同时，我们还希望它可以提取对数据操作的逻辑（如例中的counter计数），方便今后复用。我们将它叫做模型（Model），至于它如何做到所有的变量永不消失，我们回头再讲。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooModel</span></span></div><div class="line">  <span class="comment"># ...</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">counter</span></span></div><div class="line">    @counter = @counter ? @counter + <span class="number">1</span> : <span class="number">0</span> </div><div class="line">    save <span class="comment"># 持久化存储，具体实现细节在后面的文章会讲</span></div><div class="line"></div><div class="line">    @counter</div><div class="line">  <span class="keyword">end</span></div><div class="line">  <span class="comment"># ...</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooController</span></span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">index</span></span></div><div class="line">    model = FooModel.new</div><div class="line">    render <span class="symbol">html:</span> <span class="string">"&lt;p&gt;你是该网站的第<span class="subst">#&#123;model.counter&#125;</span>名访客&lt;/p&gt;"</span>.html_safe</div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<h4 id="视图（View）-–-页面展示"><a href="#视图（View）-–-页面展示" class="headerlink" title="视图（View） – 页面展示"></a>视图（View） – 页面展示</h4><p>在上面的两个例子中都出现了类似<code>render html: xxx</code>之类的代码。如果我们不想在Controller中出现HTML代码，可以把它放在View层。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooModel</span></span></div><div class="line">  <span class="comment"># ...</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">counter</span></span></div><div class="line">    @counter = @counter ? @counter + <span class="number">1</span> : <span class="number">0</span> </div><div class="line">    save <span class="comment"># 持久化存储，具体实现细节在后面的文章会讲</span></div><div class="line"></div><div class="line">    @counter</div><div class="line">  <span class="keyword">end</span></div><div class="line">  <span class="comment"># ...</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooView</span></span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(counter)</span></span></div><div class="line">    <span class="string">"&lt;p&gt;你是该网站的第<span class="subst">#&#123;counter&#125;</span>名访客&lt;/p&gt;"</span></div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooController</span></span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">index</span></span></div><div class="line">    model = FooModel.new</div><div class="line">    view  = FooView.new</div><div class="line"></div><div class="line">    render <span class="symbol">html:</span> view.index(model.counter).html_safe</div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<h3 id="小节"><a href="#小节" class="headerlink" title="小节"></a>小节</h3><p><em>1. 调度器（Controller）对于一个程序来说是必须存在的，它负责得到输入，返回输出</em><br><em>2. 我们用模型（Model）这个概念来<strong>抽象</strong>调度器（Controller）中，关于<strong>数据存取、逻辑运算</strong>相关的代码，以便独立地维护它们。</em><br><em>3. 我们用视图（View）这个概念来<strong>抽象</strong>调度器（Controller）中，关于<strong>数据展示格式</strong>相关的代码，以便独立地维护它们。</em></p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/程序开发/">程序开发</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/MVC/">MVC</a>, <a class="tags-link" href="/tags/rails/">rails</a>, <a class="tags-link" href="/tags/学习报告/">学习报告</a>
+  </div>
+
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div>
+  </div>
+  
+  <div id="sidebar" class="widgets-bottom">
+  
+<div class="widget category">
+  <h3 class="title">categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/开发工具/">开发工具</a><small>2</small></li>
+  
+    <li><a href="/categories/技术日志/">技术日志</a><small>2</small></li>
+  
+    <li><a href="/categories/流程方法/">流程方法</a><small>3</small></li>
+  
+    <li><a href="/categories/程序开发/">程序开发</a><small>6</small></li>
+  
+    <li><a href="/categories/解题报告/">解题报告</a><small>3</small></li>
+  
+    <li><a href="/categories/读书报告/">读书报告</a><small>14</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">tagcloud</h3>
+  <div class="entry">
+    <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/activemq/" style="font-size: 10px;">activemq</a> <a href="/tags/c/" style="font-size: 18px;">c++</a> <a href="/tags/c-primer-plus/" style="font-size: 18px;">c++ primer plus</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/dispatcher/" style="font-size: 10px;">dispatcher</a> <a href="/tags/gitcafe/" style="font-size: 10px;">gitcafe</a> <a href="/tags/hash/" style="font-size: 12px;">hash</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/tags/leetcode/" style="font-size: 14px;">leetcode</a> <a href="/tags/linked-list/" style="font-size: 10px;">linked list</a> <a href="/tags/octopress/" style="font-size: 10px;">octopress</a> <a href="/tags/rails/" style="font-size: 18px;">rails</a> <a href="/tags/rake/" style="font-size: 10px;">rake</a> <a href="/tags/route/" style="font-size: 10px;">route</a> <a href="/tags/ruby/" style="font-size: 10px;">ruby</a> <a href="/tags/tree/" style="font-size: 10px;">tree</a> <a href="/tags/unicorn/" style="font-size: 10px;">unicorn</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/学习报告/" style="font-size: 16px;">学习报告</a> <a href="/tags/工作经验/" style="font-size: 10px;">工作经验</a> <a href="/tags/并发/" style="font-size: 16px;">并发</a> <a href="/tags/并行/" style="font-size: 16px;">并行</a> <a href="/tags/心理/" style="font-size: 14px;">心理</a> <a href="/tags/读书报告/" style="font-size: 20px;">读书报告</a>
+  </div>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">recent_posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2017/04/16/2017-04-16-recent-thinking/">記錄最近的所思所想</a>
+      </li>
+    
+      <li>
+        <a href="/2016/12/28/2016-12-28-2016/">二零一六</a>
+      </li>
+    
+      <li>
+        <a href="/2016/11/11/2016-11-11-cpp-brief-history/">C++ 简史</a>
+      </li>
+    
+      <li>
+        <a href="/2016/05/18/2016-05-18-charlie-munger-on-the-psychology-of-human-misjudgment-three/">人类误判心理（3）</a>
+      </li>
+    
+      <li>
+        <a href="/2015/11/13/2015-11-13-the-core-value-of-sde/">软件工程师的核心价值</a>
+      </li>
+    
+  </ul>
+</div>
+
+</div>
+  
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2017 <a href="/">Bai, Yu</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://blog.dafengning.com/" target="_blank">Chong Zi</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//lib.sinaapp.com/js/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var disqus_shortname = 'everkeyword';
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  }());
+</script>
+
+
+<div id="rightfix" style="display:none;">
+
+
+<a href="javascript:void(0)" id="gotop" class="fix_btn" onclick="gotop();" title="回到顶部"><i></i></a>
+<script>
+  function gotop(){
+    $('html,body').animate({
+        scrollTop : '0px'
+      }, 800);
+  }
+  $(function(){
+    _rightfix = $('#rightfix');
+    $(window).scroll(function(){
+      $sollTop = document.documentElement.scrollTop + document.body.scrollTop;
+      if($sollTop > 350){
+        _rightfix.show();
+      }else{
+        _rightfix.hide();
+      }
+    });
+  });
+</script>
+
+</div>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

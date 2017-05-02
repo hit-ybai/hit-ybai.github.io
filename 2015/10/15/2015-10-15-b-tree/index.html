@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>B-Tree | White</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="Bai, Yu">
+  
+  
+    <meta name="description" content="简介如果一个内部节点 X 包含了 n 个有序关键字，那么节点 X 有 n + 1 个子节点，每个叶节点有相同的深度即树的高度。
+节点 X 由其关键字分隔为 n + 1 个子域，每个子域和一个子树相对应。在对一个关键字进行搜索时，会通过比较节点中关键字，进行 n + 1 路选择遍历查找。
+
+节点中关键字的个数存在上下界，用B-Tree的最小度数 t &amp;gt;= 2 来表示。非根节点至少有 t - 1">
+  
+  <meta name="description" content="简介如果一个内部节点 X 包含了 n 个有序关键字，那么节点 X 有 n + 1 个子节点，每个叶节点有相同的深度即树的高度。 节点 X 由其关键字分隔为 n + 1 个子域，每个子域和一个子树相对应。在对一个关键字进行搜索时，会通过比较节点中关键字，进行 n + 1 路选择遍历查找。  节点中关键字的个数存在上下界，用B-Tree的最小度数 t &amp;gt;= 2 来表示。非根节点至少有 t - 1">
+<meta name="keywords" content="data structure,tree">
+<meta property="og:type" content="article">
+<meta property="og:title" content="B-Tree">
+<meta property="og:url" content="http://www.everkeyword.com/2015/10/15/2015-10-15-b-tree/index.html">
+<meta property="og:site_name" content="White">
+<meta property="og:description" content="简介如果一个内部节点 X 包含了 n 个有序关键字，那么节点 X 有 n + 1 个子节点，每个叶节点有相同的深度即树的高度。 节点 X 由其关键字分隔为 n + 1 个子域，每个子域和一个子树相对应。在对一个关键字进行搜索时，会通过比较节点中关键字，进行 n + 1 路选择遍历查找。  节点中关键字的个数存在上下界，用B-Tree的最小度数 t &amp;gt;= 2 来表示。非根节点至少有 t - 1">
+<meta property="og:image" content="http://7xjra1.com1.z0.glb.clouddn.com/b-tree.png">
+<meta property="og:image" content="http://7xjra1.com1.z0.glb.clouddn.com/b-tree-split-child.png">
+<meta property="og:updated_time" content="2017-05-02T14:01:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B-Tree">
+<meta name="twitter:description" content="简介如果一个内部节点 X 包含了 n 个有序关键字，那么节点 X 有 n + 1 个子节点，每个叶节点有相同的深度即树的高度。 节点 X 由其关键字分隔为 n + 1 个子域，每个子域和一个子树相对应。在对一个关键字进行搜索时，会通过比较节点中关键字，进行 n + 1 路选择遍历查找。  节点中关键字的个数存在上下界，用B-Tree的最小度数 t &amp;gt;= 2 来表示。非根节点至少有 t - 1">
+<meta name="twitter:image" content="http://7xjra1.com1.z0.glb.clouddn.com/b-tree.png">
+  
+    <link rel="alternate" href="/atom.xml" title="White" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script><![endif]-->
+  
+  
+</head>
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">White</a></h1>
+    <p><a href="/">There&#39;s no magic in this world.</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/10/15/2015-10-15-b-tree/">
+  <time datetime="2015-10-15T10:55:27.000Z">
+    2015-10-15
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">B-Tree</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>如果一个内部节点 <em>X</em> 包含了 <em>n</em> 个有序关键字，那么节点 <em>X</em> 有 <em>n + 1</em> 个子节点，每个叶节点有相同的深度即树的高度。</p>
+<p>节点 <em>X</em> 由其关键字分隔为 <em>n + 1</em> 个子域，每个子域和一个子树相对应。在对一个关键字进行搜索时，会通过比较节点中关键字，进行 <em>n + 1</em> 路选择遍历查找。</p>
+<p><img src="http://7xjra1.com1.z0.glb.clouddn.com/b-tree.png" alt="B-Tree"></p>
+<p>节点中关键字的个数存在上下界，用<code>B-Tree</code>的最小度数 <em>t &gt;= 2</em> 来表示。非根节点至少有 <em>t - 1</em> 个关键字，即有 <em>t</em> 棵子树；至多有 <em>2t - 1</em> 个关键字，即有 <em>2t</em> 棵子树，这时我们称这个节点是满的。当 <em>t = 2</em> 时，每个内部节点有 2 个、 3 个或 4 个子树，即一棵 <em>2-3-4 树</em>。</p>
+<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><h3 id="B-TREE-SEARCH"><a href="#B-TREE-SEARCH" class="headerlink" title="B-TREE-SEARCH"></a>B-TREE-SEARCH</h3><p><code>class BTree</code><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(key)</span></span></div><div class="line">  b_tree_search(@root, key)</div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">b_tree_search</span><span class="params">(node = <span class="literal">nil</span>, search_key)</span></span></div><div class="line">  <span class="keyword">return</span> <span class="literal">nil</span> <span class="keyword">unless</span> node</div><div class="line">  node.keys.each_with_index <span class="keyword">do</span> <span class="params">|key, idx|</span></div><div class="line">    <span class="keyword">return</span> [node, idx] <span class="keyword">if</span> search_key == key</div><div class="line">    <span class="keyword">next</span> <span class="keyword">if</span> search_key &gt; key</div><div class="line">    b_tree_search(node.child[idx], key)</div><div class="line">    <span class="keyword">break</span></div><div class="line">  <span class="keyword">end</span></div><div class="line">  b_tree_search(node.child.last, key)</div><div class="line">  <span class="literal">nil</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure></p>
+<h3 id="B-TREE-CREATE"><a href="#B-TREE-CREATE" class="headerlink" title="B-TREE-CREATE"></a>B-TREE-CREATE</h3><p><code>class Node</code><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">initialize</span></span></div><div class="line">  @leaf  = <span class="literal">true</span></div><div class="line">  @keys  = []</div><div class="line">  @child = []</div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure></p>
+<p><code>class BTree</code><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">initialize</span></span></div><div class="line">  @root = Node.new</div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure></p>
+<h3 id="插入关键字"><a href="#插入关键字" class="headerlink" title="插入关键字"></a>插入关键字</h3><p>我们无法直接新建一个叶节点，把关键字插入其中（这样的<code>B-Tree</code>可能是不合法的），所以我们会把新的关键字插入到已有的节点中。不过这样可能会导致一个节点关键字的数量超过它的上界，所以我们引入一个新的操作：分裂<code>B-Tree</code>中的节点。</p>
+<h3 id="B-TREE-SPLIT-CHILD"><a href="#B-TREE-SPLIT-CHILD" class="headerlink" title="B-TREE-SPLIT-CHILD"></a>B-TREE-SPLIT-CHILD</h3><p><img src="http://7xjra1.com1.z0.glb.clouddn.com/b-tree-split-child.png" alt="B-TREE-SPLIT-CHILD"><br><code>class BTree</code><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">b_tree_split_node</span><span class="params">(node, pos)</span></span></div><div class="line">  new_child = Node.new</div><div class="line">  old_child = node.child[pos]</div><div class="line"></div><div class="line">  new_child.leaf  = old_child.leaf</div><div class="line">  new_child.keys  = old_child.pop(@t - <span class="number">1</span>)</div><div class="line">  new_child.child = old_child.pop(@t)</div><div class="line"></div><div class="line">  node.insert_child( new_child, pos + <span class="number">1</span> )</div><div class="line">  node.insert_key( old_child.keys.pop, pos )</div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure></p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/程序开发/">程序开发</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/data-structure/">data structure</a>, <a class="tags-link" href="/tags/tree/">tree</a>
+  </div>
+
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div>
+  </div>
+  
+  <div id="sidebar" class="widgets-bottom">
+  
+<div class="widget category">
+  <h3 class="title">categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/开发工具/">开发工具</a><small>2</small></li>
+  
+    <li><a href="/categories/技术日志/">技术日志</a><small>2</small></li>
+  
+    <li><a href="/categories/流程方法/">流程方法</a><small>3</small></li>
+  
+    <li><a href="/categories/程序开发/">程序开发</a><small>6</small></li>
+  
+    <li><a href="/categories/解题报告/">解题报告</a><small>3</small></li>
+  
+    <li><a href="/categories/读书报告/">读书报告</a><small>14</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">tagcloud</h3>
+  <div class="entry">
+    <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/activemq/" style="font-size: 10px;">activemq</a> <a href="/tags/c/" style="font-size: 18px;">c++</a> <a href="/tags/c-primer-plus/" style="font-size: 18px;">c++ primer plus</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/dispatcher/" style="font-size: 10px;">dispatcher</a> <a href="/tags/gitcafe/" style="font-size: 10px;">gitcafe</a> <a href="/tags/hash/" style="font-size: 12px;">hash</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/tags/leetcode/" style="font-size: 14px;">leetcode</a> <a href="/tags/linked-list/" style="font-size: 10px;">linked list</a> <a href="/tags/octopress/" style="font-size: 10px;">octopress</a> <a href="/tags/rails/" style="font-size: 18px;">rails</a> <a href="/tags/rake/" style="font-size: 10px;">rake</a> <a href="/tags/route/" style="font-size: 10px;">route</a> <a href="/tags/ruby/" style="font-size: 10px;">ruby</a> <a href="/tags/tree/" style="font-size: 10px;">tree</a> <a href="/tags/unicorn/" style="font-size: 10px;">unicorn</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/学习报告/" style="font-size: 16px;">学习报告</a> <a href="/tags/工作经验/" style="font-size: 10px;">工作经验</a> <a href="/tags/并发/" style="font-size: 16px;">并发</a> <a href="/tags/并行/" style="font-size: 16px;">并行</a> <a href="/tags/心理/" style="font-size: 14px;">心理</a> <a href="/tags/读书报告/" style="font-size: 20px;">读书报告</a>
+  </div>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">recent_posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2017/04/16/2017-04-16-recent-thinking/">記錄最近的所思所想</a>
+      </li>
+    
+      <li>
+        <a href="/2016/12/28/2016-12-28-2016/">二零一六</a>
+      </li>
+    
+      <li>
+        <a href="/2016/11/11/2016-11-11-cpp-brief-history/">C++ 简史</a>
+      </li>
+    
+      <li>
+        <a href="/2016/05/18/2016-05-18-charlie-munger-on-the-psychology-of-human-misjudgment-three/">人类误判心理（3）</a>
+      </li>
+    
+      <li>
+        <a href="/2015/11/13/2015-11-13-the-core-value-of-sde/">软件工程师的核心价值</a>
+      </li>
+    
+  </ul>
+</div>
+
+</div>
+  
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2017 <a href="/">Bai, Yu</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://blog.dafengning.com/" target="_blank">Chong Zi</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//lib.sinaapp.com/js/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var disqus_shortname = 'everkeyword';
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  }());
+</script>
+
+
+<div id="rightfix" style="display:none;">
+
+
+<a href="javascript:void(0)" id="gotop" class="fix_btn" onclick="gotop();" title="回到顶部"><i></i></a>
+<script>
+  function gotop(){
+    $('html,body').animate({
+        scrollTop : '0px'
+      }, 800);
+  }
+  $(function(){
+    _rightfix = $('#rightfix');
+    $(window).scroll(function(){
+      $sollTop = document.documentElement.scrollTop + document.body.scrollTop;
+      if($sollTop > 350){
+        _rightfix.show();
+      }else{
+        _rightfix.hide();
+      }
+    });
+  });
+</script>
+
+</div>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

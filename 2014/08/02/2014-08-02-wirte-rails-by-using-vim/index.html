@@ -1,0 +1,255 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>Rails开发常用Vim插件 | White</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="Bai, Yu">
+  
+  
+    <meta name="description" content="看RailsCast China的时候，收集了一些常用来写Ruby on Rails的Vim插件:
+
+commandT功能: 与Sublime的commandT快捷键类似，可以实现当前项目文件查找
+CtrlP功能: 实现文件的查找，并快速切换；“CommandT”和”CtrlP”的功能基本一致，顾名思义，通过快捷键”command+T”和”Ctrl+P”，呼叫插件。
+
+Rails.vim常用功能:">
+  
+  <meta name="description" content="看RailsCast China的时候，收集了一些常用来写Ruby on Rails的Vim插件:  commandT功能: 与Sublime的commandT快捷键类似，可以实现当前项目文件查找 CtrlP功能: 实现文件的查找，并快速切换；“CommandT”和”CtrlP”的功能基本一致，顾名思义，通过快捷键”command+T”和”Ctrl+P”，呼叫插件。  Rails.vim常用功能:">
+<meta name="keywords" content="vim,rails">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails开发常用Vim插件">
+<meta property="og:url" content="http://www.everkeyword.com/2014/08/02/2014-08-02-wirte-rails-by-using-vim/index.html">
+<meta property="og:site_name" content="White">
+<meta property="og:description" content="看RailsCast China的时候，收集了一些常用来写Ruby on Rails的Vim插件:  commandT功能: 与Sublime的commandT快捷键类似，可以实现当前项目文件查找 CtrlP功能: 实现文件的查找，并快速切换；“CommandT”和”CtrlP”的功能基本一致，顾名思义，通过快捷键”command+T”和”Ctrl+P”，呼叫插件。  Rails.vim常用功能:">
+<meta property="og:updated_time" content="2017-05-02T13:45:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails开发常用Vim插件">
+<meta name="twitter:description" content="看RailsCast China的时候，收集了一些常用来写Ruby on Rails的Vim插件:  commandT功能: 与Sublime的commandT快捷键类似，可以实现当前项目文件查找 CtrlP功能: 实现文件的查找，并快速切换；“CommandT”和”CtrlP”的功能基本一致，顾名思义，通过快捷键”command+T”和”Ctrl+P”，呼叫插件。  Rails.vim常用功能:">
+  
+    <link rel="alternate" href="/atom.xml" title="White" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script><![endif]-->
+  
+  
+</head>
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">White</a></h1>
+    <p><a href="/">There&#39;s no magic in this world.</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/08/02/2014-08-02-wirte-rails-by-using-vim/">
+  <time datetime="2014-08-02T00:21:31.000Z">
+    2014-08-02
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">Rails开发常用Vim插件</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>看<a href="http://Railscasts-china.com" target="_blank" rel="external">RailsCast China</a>的时候，收集了一些常用来写Ruby on Rails的Vim插件:</p>
+<ul>
+<li><a href="http://www.vim.org/scripts/script.php?script_id=3025" target="_blank" rel="external">commandT</a><br>功能: 与Sublime的commandT快捷键类似，可以实现当前项目文件查找</li>
+<li><p><a href="http://kien.github.com/ctrlp.vim/" target="_blank" rel="external">CtrlP</a><br>功能: 实现文件的查找，并快速切换；<br>“CommandT”和”CtrlP”的功能基本一致，顾名思义，通过快捷键”command+T”和”Ctrl+P”，呼叫插件。</p>
+</li>
+<li><p><a href="http://www.vim.org/scripts/script.php?script_id=1567" target="_blank" rel="external">Rails.vim</a><br>常用功能:<br>“:Rfind/:1R/:find”: 可以用来查找目录中的文件<br>“:Rfunctionaltest”: 跳转到单元测试<br>“:RController”: 跳转到Controller<br>“:RVfunctionaltest”: (横屏分屏)打开单元测试<br>“gf”: 代码上线文相关跳转<br>详见文档</p>
+</li>
+<li><p><a href="http://www.vim.org/scripts/script.php?script_id=2540" target="_blank" rel="external">snipMate</a><br>功能: 输入简写展开<br>例: ‘bt’+Tab-&gt;‘belongs_to’, ‘hm’+Tab-‘has_many’, ‘rp’+Tab-&gt;“render :partial =&gt; ‘item’”, …<br>ruby.snippets文件中有各个简写展开形式的记录，也可以通过改写这个文件，自定义展开形式</p>
+</li>
+<li><p><a href="https://github.com/mileszs/ack.vim" target="_blank" rel="external">ack.vim</a><br>功能: 根据文件内容查找文件，并切换文件<br>例: “:Ack ‘pattern’”</p>
+</li>
+<li><p><a href="http://www.vim.org/scripts/script.php?script_id=1658" target="_blank" rel="external">The NERD tree</a><br>功能: 显示文件目录;</p>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference:"></a>Reference:</h2><p>Rails with Vim : <a href="http://Railscasts-china.com/episodes/Rails-with-vim" target="_blank" rel="external">http://Railscasts-china.com/episodes/Rails-with-vim</a></p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/开发工具/">开发工具</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/rails/">rails</a>, <a class="tags-link" href="/tags/vim/">vim</a>
+  </div>
+
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div>
+  </div>
+  
+  <div id="sidebar" class="widgets-bottom">
+  
+<div class="widget category">
+  <h3 class="title">categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/开发工具/">开发工具</a><small>2</small></li>
+  
+    <li><a href="/categories/技术日志/">技术日志</a><small>2</small></li>
+  
+    <li><a href="/categories/流程方法/">流程方法</a><small>3</small></li>
+  
+    <li><a href="/categories/程序开发/">程序开发</a><small>6</small></li>
+  
+    <li><a href="/categories/解题报告/">解题报告</a><small>3</small></li>
+  
+    <li><a href="/categories/读书报告/">读书报告</a><small>14</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">tagcloud</h3>
+  <div class="entry">
+    <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/activemq/" style="font-size: 10px;">activemq</a> <a href="/tags/c/" style="font-size: 18px;">c++</a> <a href="/tags/c-primer-plus/" style="font-size: 18px;">c++ primer plus</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/dispatcher/" style="font-size: 10px;">dispatcher</a> <a href="/tags/gitcafe/" style="font-size: 10px;">gitcafe</a> <a href="/tags/hash/" style="font-size: 12px;">hash</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/tags/leetcode/" style="font-size: 14px;">leetcode</a> <a href="/tags/linked-list/" style="font-size: 10px;">linked list</a> <a href="/tags/octopress/" style="font-size: 10px;">octopress</a> <a href="/tags/rails/" style="font-size: 18px;">rails</a> <a href="/tags/rake/" style="font-size: 10px;">rake</a> <a href="/tags/route/" style="font-size: 10px;">route</a> <a href="/tags/ruby/" style="font-size: 10px;">ruby</a> <a href="/tags/tree/" style="font-size: 10px;">tree</a> <a href="/tags/unicorn/" style="font-size: 10px;">unicorn</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/学习报告/" style="font-size: 16px;">学习报告</a> <a href="/tags/工作经验/" style="font-size: 10px;">工作经验</a> <a href="/tags/并发/" style="font-size: 16px;">并发</a> <a href="/tags/并行/" style="font-size: 16px;">并行</a> <a href="/tags/心理/" style="font-size: 14px;">心理</a> <a href="/tags/读书报告/" style="font-size: 20px;">读书报告</a>
+  </div>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">recent_posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2017/04/16/2017-04-16-recent-thinking/">記錄最近的所思所想</a>
+      </li>
+    
+      <li>
+        <a href="/2016/12/28/2016-12-28-2016/">二零一六</a>
+      </li>
+    
+      <li>
+        <a href="/2016/11/11/2016-11-11-cpp-brief-history/">C++ 简史</a>
+      </li>
+    
+      <li>
+        <a href="/2016/05/18/2016-05-18-charlie-munger-on-the-psychology-of-human-misjudgment-three/">人类误判心理（3）</a>
+      </li>
+    
+      <li>
+        <a href="/2015/11/13/2015-11-13-the-core-value-of-sde/">软件工程师的核心价值</a>
+      </li>
+    
+  </ul>
+</div>
+
+</div>
+  
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2017 <a href="/">Bai, Yu</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://blog.dafengning.com/" target="_blank">Chong Zi</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//lib.sinaapp.com/js/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var disqus_shortname = 'everkeyword';
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  }());
+</script>
+
+
+<div id="rightfix" style="display:none;">
+
+
+<a href="javascript:void(0)" id="gotop" class="fix_btn" onclick="gotop();" title="回到顶部"><i></i></a>
+<script>
+  function gotop(){
+    $('html,body').animate({
+        scrollTop : '0px'
+      }, 800);
+  }
+  $(function(){
+    _rightfix = $('#rightfix');
+    $(window).scroll(function(){
+      $sollTop = document.documentElement.scrollTop + document.body.scrollTop;
+      if($sollTop > 350){
+        _rightfix.show();
+      }else{
+        _rightfix.hide();
+      }
+    });
+  });
+</script>
+
+</div>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

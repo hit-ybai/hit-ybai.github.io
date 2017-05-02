@@ -1,0 +1,255 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>C++ PRIMER PLUS (10) | White</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="Bai, Yu">
+  
+  
+    <meta name="description" content="第10章 对象和类OOP特性：
+抽象
+封装和数据隐藏
+多态
+继承
+代码的可重用性
+
+10.1 过程性编程和面向对象编程10.2 抽象和类10.3 类的构造函数和析构函数1void stock::show() const //promises note change invoking object
+这种方法声明和定义的类函数成为const成员函数，只要类方法不修改调用对象，就应该将其声明为const">
+  
+  <meta name="description" content="第10章 对象和类OOP特性： 抽象 封装和数据隐藏 多态 继承 代码的可重用性  10.1 过程性编程和面向对象编程10.2 抽象和类10.3 类的构造函数和析构函数1void stock::show() const //promises note change invoking object 这种方法声明和定义的类函数成为const成员函数，只要类方法不修改调用对象，就应该将其声明为const">
+<meta name="keywords" content="c++,c++ primer plus,读书报告">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ PRIMER PLUS (10)">
+<meta property="og:url" content="http://www.everkeyword.com/2012/03/10/2012-03-10-cpp-primer-plus-10/index.html">
+<meta property="og:site_name" content="White">
+<meta property="og:description" content="第10章 对象和类OOP特性： 抽象 封装和数据隐藏 多态 继承 代码的可重用性  10.1 过程性编程和面向对象编程10.2 抽象和类10.3 类的构造函数和析构函数1void stock::show() const //promises note change invoking object 这种方法声明和定义的类函数成为const成员函数，只要类方法不修改调用对象，就应该将其声明为const">
+<meta property="og:updated_time" content="2017-05-02T13:45:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++ PRIMER PLUS (10)">
+<meta name="twitter:description" content="第10章 对象和类OOP特性： 抽象 封装和数据隐藏 多态 继承 代码的可重用性  10.1 过程性编程和面向对象编程10.2 抽象和类10.3 类的构造函数和析构函数1void stock::show() const //promises note change invoking object 这种方法声明和定义的类函数成为const成员函数，只要类方法不修改调用对象，就应该将其声明为const">
+  
+    <link rel="alternate" href="/atom.xml" title="White" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script><![endif]-->
+  
+  
+</head>
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">White</a></h1>
+    <p><a href="/">There&#39;s no magic in this world.</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2012/03/10/2012-03-10-cpp-primer-plus-10/">
+  <time datetime="2012-03-10T02:21:31.000Z">
+    2012-03-10
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">C++ PRIMER PLUS (10)</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h2 id="第10章-对象和类"><a href="#第10章-对象和类" class="headerlink" title="第10章 对象和类"></a>第10章 对象和类</h2><h3 id="OOP特性："><a href="#OOP特性：" class="headerlink" title="OOP特性："></a>OOP特性：</h3><ul>
+<li>抽象</li>
+<li>封装和数据隐藏</li>
+<li>多态</li>
+<li>继承</li>
+<li>代码的可重用性</li>
+</ul>
+<h3 id="10-1-过程性编程和面向对象编程"><a href="#10-1-过程性编程和面向对象编程" class="headerlink" title="10.1 过程性编程和面向对象编程"></a>10.1 过程性编程和面向对象编程</h3><h3 id="10-2-抽象和类"><a href="#10-2-抽象和类" class="headerlink" title="10.2 抽象和类"></a>10.2 抽象和类</h3><h3 id="10-3-类的构造函数和析构函数"><a href="#10-3-类的构造函数和析构函数" class="headerlink" title="10.3 类的构造函数和析构函数"></a>10.3 类的构造函数和析构函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> stock::show() <span class="keyword">const</span> <span class="comment">//promises note change invoking object</span></div></pre></td></tr></table></figure>
+<p>这种方法声明和定义的类函数成为<code>const</code>成员函数，只要类方法不修改调用对象，就应该将其声明为<code>const</code>。因为形如<code>show()</code>的方法没有形参，不能用<code>const</code>引用或<code>const</code>指针来避免修改对象。</p>
+<p>在当前类的方法中<code>*this</code>可作为当前类的别名进行修改或访问。</p>
+<h3 id="10-7-类的作用域"><a href="#10-7-类的作用域" class="headerlink" title="10.7 类的作用域"></a>10.7 类的作用域</h3><p>在类中定义常量的方式——使用关键字<code>static</code>:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">stock</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">private</span>:</div><div class="line">       <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> len = <span class="number">30</span>;</div><div class="line">       …</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p><em>第十章结束</em></p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/读书报告/">读书报告</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/c/">c++</a>, <a class="tags-link" href="/tags/c-primer-plus/">c++ primer plus</a>, <a class="tags-link" href="/tags/读书报告/">读书报告</a>
+  </div>
+
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div>
+  </div>
+  
+  <div id="sidebar" class="widgets-bottom">
+  
+<div class="widget category">
+  <h3 class="title">categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/开发工具/">开发工具</a><small>2</small></li>
+  
+    <li><a href="/categories/技术日志/">技术日志</a><small>2</small></li>
+  
+    <li><a href="/categories/流程方法/">流程方法</a><small>3</small></li>
+  
+    <li><a href="/categories/程序开发/">程序开发</a><small>6</small></li>
+  
+    <li><a href="/categories/解题报告/">解题报告</a><small>3</small></li>
+  
+    <li><a href="/categories/读书报告/">读书报告</a><small>14</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">tagcloud</h3>
+  <div class="entry">
+    <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/activemq/" style="font-size: 10px;">activemq</a> <a href="/tags/c/" style="font-size: 18px;">c++</a> <a href="/tags/c-primer-plus/" style="font-size: 18px;">c++ primer plus</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/dispatcher/" style="font-size: 10px;">dispatcher</a> <a href="/tags/gitcafe/" style="font-size: 10px;">gitcafe</a> <a href="/tags/hash/" style="font-size: 12px;">hash</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/tags/leetcode/" style="font-size: 14px;">leetcode</a> <a href="/tags/linked-list/" style="font-size: 10px;">linked list</a> <a href="/tags/octopress/" style="font-size: 10px;">octopress</a> <a href="/tags/rails/" style="font-size: 18px;">rails</a> <a href="/tags/rake/" style="font-size: 10px;">rake</a> <a href="/tags/route/" style="font-size: 10px;">route</a> <a href="/tags/ruby/" style="font-size: 10px;">ruby</a> <a href="/tags/tree/" style="font-size: 10px;">tree</a> <a href="/tags/unicorn/" style="font-size: 10px;">unicorn</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/学习报告/" style="font-size: 16px;">学习报告</a> <a href="/tags/工作经验/" style="font-size: 10px;">工作经验</a> <a href="/tags/并发/" style="font-size: 16px;">并发</a> <a href="/tags/并行/" style="font-size: 16px;">并行</a> <a href="/tags/心理/" style="font-size: 14px;">心理</a> <a href="/tags/读书报告/" style="font-size: 20px;">读书报告</a>
+  </div>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">recent_posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2017/04/16/2017-04-16-recent-thinking/">記錄最近的所思所想</a>
+      </li>
+    
+      <li>
+        <a href="/2016/12/28/2016-12-28-2016/">二零一六</a>
+      </li>
+    
+      <li>
+        <a href="/2016/11/11/2016-11-11-cpp-brief-history/">C++ 简史</a>
+      </li>
+    
+      <li>
+        <a href="/2016/05/18/2016-05-18-charlie-munger-on-the-psychology-of-human-misjudgment-three/">人类误判心理（3）</a>
+      </li>
+    
+      <li>
+        <a href="/2015/11/13/2015-11-13-the-core-value-of-sde/">软件工程师的核心价值</a>
+      </li>
+    
+  </ul>
+</div>
+
+</div>
+  
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2017 <a href="/">Bai, Yu</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://blog.dafengning.com/" target="_blank">Chong Zi</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//lib.sinaapp.com/js/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var disqus_shortname = 'everkeyword';
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  }());
+</script>
+
+
+<div id="rightfix" style="display:none;">
+
+
+<a href="javascript:void(0)" id="gotop" class="fix_btn" onclick="gotop();" title="回到顶部"><i></i></a>
+<script>
+  function gotop(){
+    $('html,body').animate({
+        scrollTop : '0px'
+      }, 800);
+  }
+  $(function(){
+    _rightfix = $('#rightfix');
+    $(window).scroll(function(){
+      $sollTop = document.documentElement.scrollTop + document.body.scrollTop;
+      if($sollTop > 350){
+        _rightfix.show();
+      }else{
+        _rightfix.hide();
+      }
+    });
+  });
+</script>
+
+</div>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>C++ PRIMER PLUS (11) | White</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="Bai, Yu">
+  
+  
+    <meta name="description" content="第11章 使用类11.1 操作符重载操作符重载时一种形式的C++多态，函数原型：1Type_name operator op (argument-list);
+Type_name operator op相当于函数名，(argument-list)相当于参数列表，Type_name相当于返回值，只是在调用的时候可省去函数后的括号和函数名中operator（不省也行，如strsum = str1.op">
+  
+  <meta name="description" content="第11章 使用类11.1 操作符重载操作符重载时一种形式的C++多态，函数原型：1Type_name operator op (argument-list); Type_name operator op相当于函数名，(argument-list)相当于参数列表，Type_name相当于返回值，只是在调用的时候可省去函数后的括号和函数名中operator（不省也行，如strsum = str1.op">
+<meta name="keywords" content="c++,c++ primer plus,读书报告">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ PRIMER PLUS (11)">
+<meta property="og:url" content="http://www.everkeyword.com/2012/03/10/2012-03-10-cpp-primer-plus-11/index.html">
+<meta property="og:site_name" content="White">
+<meta property="og:description" content="第11章 使用类11.1 操作符重载操作符重载时一种形式的C++多态，函数原型：1Type_name operator op (argument-list); Type_name operator op相当于函数名，(argument-list)相当于参数列表，Type_name相当于返回值，只是在调用的时候可省去函数后的括号和函数名中operator（不省也行，如strsum = str1.op">
+<meta property="og:updated_time" content="2017-05-02T13:45:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++ PRIMER PLUS (11)">
+<meta name="twitter:description" content="第11章 使用类11.1 操作符重载操作符重载时一种形式的C++多态，函数原型：1Type_name operator op (argument-list); Type_name operator op相当于函数名，(argument-list)相当于参数列表，Type_name相当于返回值，只是在调用的时候可省去函数后的括号和函数名中operator（不省也行，如strsum = str1.op">
+  
+    <link rel="alternate" href="/atom.xml" title="White" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script><![endif]-->
+  
+  
+</head>
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">White</a></h1>
+    <p><a href="/">There&#39;s no magic in this world.</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2012/03/10/2012-03-10-cpp-primer-plus-11/">
+  <time datetime="2012-03-10T07:21:31.000Z">
+    2012-03-10
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">C++ PRIMER PLUS (11)</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h2 id="第11章-使用类"><a href="#第11章-使用类" class="headerlink" title="第11章 使用类"></a>第11章 使用类</h2><h3 id="11-1-操作符重载"><a href="#11-1-操作符重载" class="headerlink" title="11.1 操作符重载"></a>11.1 操作符重载</h3><p>操作符重载时一种形式的C++多态，函数原型：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function">Type_name <span class="keyword">operator</span> <span class="title">op</span> <span class="params">(argument-<span class="built_in">list</span>)</span></span>;</div></pre></td></tr></table></figure></p>
+<p><code>Type_name operator op</code>相当于函数名，<code>(argument-list)</code>相当于参数列表，<code>Type_name</code>相当于返回值，只是在调用的时候可省去函数后的括号和函数名中<code>operator</code>（不省也行，如<code>strsum = str1.operator+(str2);</code>）</p>
+<p>第一个参数通过<code>this</code>指针隐式传递</p>
+<h3 id="11-3-友元简介"><a href="#11-3-友元简介" class="headerlink" title="11.3 友元简介"></a>11.3 友元简介</h3><p>在左侧的操作数不是调用对象时，可使用非成员函数<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">A = <span class="number">2.75</span> * B; <span class="comment">// can not correspond to a mumber fuction</span></div><div class="line">A = <span class="keyword">operator</span>*(<span class="number">2.75</span>, B); <span class="comment">// can correspond to a mumber fuction</span></div></pre></td></tr></table></figure></p>
+<p>函数原型如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Time <span class="keyword">operator</span>* (<span class="keyword">double</span> m, <span class="keyword">const</span> Time &amp;t);</div></pre></td></tr></table></figure></p>
+<p>但这引发了一个新问题，非成员函数不能访问类的私有数据。<br>创建友元函数要先将其原型放在类声明中，并在前面加上关键字<code>friend</code>：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">friend</span> Time <span class="keyword">operator</span>* (<span class="keyword">double</span> m, <span class="keyword">const</span> Time &amp;t);</div></pre></td></tr></table></figure></p>
+<p>友元函数不能使用成员操作符调用，但与成员函数访问权限相同<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Time <span class="keyword">operator</span>* (<span class="keyword">double</span> m, <span class="keyword">const</span> Time &amp;t)</div><div class="line">&#123;</div><div class="line">       <span class="keyword">return</span> t * m;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>重载<code>&lt;&lt;</code>操作符</p>
+<p>第一种版本，定义友元函数：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> <span class="keyword">operator</span>&lt;&lt; (ostream &amp;os, <span class="keyword">const</span> Time &amp;t)</div><div class="line">&#123;</div><div class="line">       os &lt;&lt; t.hours &lt;&lt; <span class="string">"hours, "</span> &lt;&lt; t.minutes &lt;&lt; <span class="string">"minutes"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>os</code>可以暂时理解为<code>cout</code>的别名</p>
+<h3 id="11-5-再谈重载：矢量类"><a href="#11-5-再谈重载：矢量类" class="headerlink" title="11.5 再谈重载：矢量类"></a>11.5 再谈重载：矢量类</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">shove.<span class="built_in">set</span>(<span class="number">100</span>, <span class="number">300</span>); <span class="comment">//直接设置</span></div><div class="line">shove = Vector(<span class="number">100</span>, <span class="number">300</span>) <span class="comment">// Vector为类名，此方法使用构造函数创建一个临时对象，让后赋给shove</span></div></pre></td></tr></table></figure>
+<p>一元负号操作符<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Vector Vector::<span class="keyword">operator</span>-() <span class="keyword">const</span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">return</span> Vector(-x, -y);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="11-6-类的自动转换和强制类型转换"><a href="#11-6-类的自动转换和强制类型转换" class="headerlink" title="11.6 类的自动转换和强制类型转换"></a>11.6 类的自动转换和强制类型转换</h3><p>只接受一个参数的构造函数如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Stonewt (<span class="keyword">double</span> lbs);</div></pre></td></tr></table></figure></p>
+<p>可隐式转换<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Stonewt mycat;</div><div class="line">mycat = <span class="number">19.6</span>; <span class="comment">//程序调用Stonewt(double)来创建临时对象，然后赋值</span></div><div class="line"><span class="comment">// 但这种类型并不总合乎需要，可用explicit来关闭这种特性</span></div><div class="line"><span class="function"><span class="keyword">explicit</span> <span class="title">Stonewt</span><span class="params">(<span class="keyword">double</span> lbs)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>这将关闭上例的隐式转换，但仍然允许显式强制转换<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Stonewt myCat；</div><div class="line">myCat = Stonewt(<span class="number">19.6</span>);</div><div class="line">myCat = (Stonewt) <span class="number">19.6</span>;</div></pre></td></tr></table></figure></p>
+<p>现在研究如何将对象转换为数字<br>转换函数：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">operator</span> <span class="title">typeName</span><span class="params">()</span></span>;</div></pre></td></tr></table></figure></p>
+<p>注意：</p>
+<ul>
+<li>转换函数必须是类方法</li>
+<li>转换函数不能指定返回类型</li>
+<li>转换函数不能有参数</li>
+</ul>
+<p>例如，转换为double的函数原型<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">operator</span> <span class="title">double</span><span class="params">()</span></span>;</div></pre></td></tr></table></figure></p>
+<p>如果该类值定义了一个转换函数，则可以直接用<code>cout</code>输出该类(<code>&lt;&lt;</code>未重载。否则编译器将认为语句有二义性而拒绝它，只能在前增加强制类型转换<br>转换函数也有其优缺点，如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> ar[<span class="number">20</span>];</div><div class="line">……</div><div class="line"><span class="function">Stonewt <span class="title">temp</span><span class="params">(<span class="number">14</span>, <span class="number">4</span>)</span></span>;</div><div class="line"><span class="keyword">int</span> Temp = <span class="number">1</span>;</div><div class="line"><span class="built_in">cout</span> &lt;&lt; ar[temp];</div></pre></td></tr></table></figure></p>
+<p>这种误用对象为索引之类的错误不会被编译器发现，而转换函数又不能用<code>explicit</code>来关闭隐式转换<br>解决方法是定义一个功能相同的非转换函数<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> Stonest::Stone_to_Int()</div><div class="line">&#123;</div><div class="line">       <span class="keyword">return</span> <span class="keyword">int</span>(pounds + <span class="number">0</span>,<span class="number">5</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在<code>main</code>上面定义的全局对象的构造函数会先于<code>main</code>运行</p>
+<p><em>第十一章结束</em></p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/读书报告/">读书报告</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/c/">c++</a>, <a class="tags-link" href="/tags/c-primer-plus/">c++ primer plus</a>, <a class="tags-link" href="/tags/读书报告/">读书报告</a>
+  </div>
+
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</div>
+  </div>
+  
+  <div id="sidebar" class="widgets-bottom">
+  
+<div class="widget category">
+  <h3 class="title">categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/开发工具/">开发工具</a><small>2</small></li>
+  
+    <li><a href="/categories/技术日志/">技术日志</a><small>2</small></li>
+  
+    <li><a href="/categories/流程方法/">流程方法</a><small>3</small></li>
+  
+    <li><a href="/categories/程序开发/">程序开发</a><small>6</small></li>
+  
+    <li><a href="/categories/解题报告/">解题报告</a><small>3</small></li>
+  
+    <li><a href="/categories/读书报告/">读书报告</a><small>14</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">tagcloud</h3>
+  <div class="entry">
+    <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/activemq/" style="font-size: 10px;">activemq</a> <a href="/tags/c/" style="font-size: 18px;">c++</a> <a href="/tags/c-primer-plus/" style="font-size: 18px;">c++ primer plus</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/dispatcher/" style="font-size: 10px;">dispatcher</a> <a href="/tags/gitcafe/" style="font-size: 10px;">gitcafe</a> <a href="/tags/hash/" style="font-size: 12px;">hash</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/tags/leetcode/" style="font-size: 14px;">leetcode</a> <a href="/tags/linked-list/" style="font-size: 10px;">linked list</a> <a href="/tags/octopress/" style="font-size: 10px;">octopress</a> <a href="/tags/rails/" style="font-size: 18px;">rails</a> <a href="/tags/rake/" style="font-size: 10px;">rake</a> <a href="/tags/route/" style="font-size: 10px;">route</a> <a href="/tags/ruby/" style="font-size: 10px;">ruby</a> <a href="/tags/tree/" style="font-size: 10px;">tree</a> <a href="/tags/unicorn/" style="font-size: 10px;">unicorn</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/学习报告/" style="font-size: 16px;">学习报告</a> <a href="/tags/工作经验/" style="font-size: 10px;">工作经验</a> <a href="/tags/并发/" style="font-size: 16px;">并发</a> <a href="/tags/并行/" style="font-size: 16px;">并行</a> <a href="/tags/心理/" style="font-size: 14px;">心理</a> <a href="/tags/读书报告/" style="font-size: 20px;">读书报告</a>
+  </div>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">recent_posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2017/04/16/2017-04-16-recent-thinking/">記錄最近的所思所想</a>
+      </li>
+    
+      <li>
+        <a href="/2016/12/28/2016-12-28-2016/">二零一六</a>
+      </li>
+    
+      <li>
+        <a href="/2016/11/11/2016-11-11-cpp-brief-history/">C++ 简史</a>
+      </li>
+    
+      <li>
+        <a href="/2016/05/18/2016-05-18-charlie-munger-on-the-psychology-of-human-misjudgment-three/">人类误判心理（3）</a>
+      </li>
+    
+      <li>
+        <a href="/2015/11/13/2015-11-13-the-core-value-of-sde/">软件工程师的核心价值</a>
+      </li>
+    
+  </ul>
+</div>
+
+</div>
+  
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2017 <a href="/">Bai, Yu</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://blog.dafengning.com/" target="_blank">Chong Zi</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//lib.sinaapp.com/js/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var disqus_shortname = 'everkeyword';
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  }());
+</script>
+
+
+<div id="rightfix" style="display:none;">
+
+
+<a href="javascript:void(0)" id="gotop" class="fix_btn" onclick="gotop();" title="回到顶部"><i></i></a>
+<script>
+  function gotop(){
+    $('html,body').animate({
+        scrollTop : '0px'
+      }, 800);
+  }
+  $(function(){
+    _rightfix = $('#rightfix');
+    $(window).scroll(function(){
+      $sollTop = document.documentElement.scrollTop + document.body.scrollTop;
+      if($sollTop > 350){
+        _rightfix.show();
+      }else{
+        _rightfix.hide();
+      }
+    });
+  });
+</script>
+
+</div>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

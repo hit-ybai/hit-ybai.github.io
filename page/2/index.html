@@ -1,0 +1,650 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>White</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="Bai, Yu">
+  
+  
+  <meta property="og:type" content="website">
+<meta property="og:title" content="White">
+<meta property="og:url" content="http://www.everkeyword.com/page/2/index.html">
+<meta property="og:site_name" content="White">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="White">
+  
+    <link rel="alternate" href="/atom.xml" title="White" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script><![endif]-->
+  
+  
+</head>
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">White</a></h1>
+    <p><a href="/">There&#39;s no magic in this world.</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content">
+
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/06/22/2015-06-22-seven-concurrency-models-in-seven-weeks-dining-philosophers-problem/">
+  <time datetime="2015-06-22T03:20:27.000Z">
+    2015-06-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/06/22/2015-06-22-seven-concurrency-models-in-seven-weeks-dining-philosophers-problem/">并发模型学习 (4)</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="哲学家用餐问题（Dining-philosophers-problem）"><a href="#哲学家用餐问题（Dining-philosophers-problem）" class="headerlink" title="哲学家用餐问题（Dining philosophers problem）"></a><a href="https://zh.wikipedia.org/zh-cn/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%90%E9%97%AE%E9%A2%98" target="_blank" rel="external">哲学家用餐问题（Dining philosophers problem）</a></h4><p>简单来说：有五个哲学家坐在一张圆桌上，每个人之间放着一只餐叉，这样桌上就有五只餐叉。哲学家只会做两件事，吃饭，或者思考。吃东西的时候，他们就停止思考，思考的时候也停止吃东西。<br><img src="http://7xjra1.com1.z0.glb.clouddn.com/Dining_philosophers.png" alt="来自Wikipedia"></p>
+<p>是的，他们每个人都会用到别人用过的餐叉，开不开心。</p>
+<p>这个例子一般用来说明死锁问题，经典的场景之一：一名哲学家拿起了自己左手的餐叉，并为其加锁（以免同时被自己左边的哲学家拿到），而后等待自己右手的餐叉锁的释放。</p>
+<p>然而，如果五个哲学家同时处于这个状态，就会死锁。</p>
+<p>举个栗子：<br><code>Chopstick.java</code><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Chopstick</span> </span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>Philosopher.java</code><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.Random;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Philosopher</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</div><div class="line">    <span class="keyword">private</span> Chopstick left, right;</div><div class="line">    <span class="keyword">private</span> Random random;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Philosopher</span><span class="params">(Chopstick left, Chopstick right, <span class="keyword">int</span> id)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.left  = left; <span class="keyword">this</span>.right = right; <span class="keyword">this</span>.id = id;</div><div class="line">        random = <span class="keyword">new</span> Random();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">                Thread.sleep( random.nextInt(<span class="number">1000</span>) );     <span class="comment">// Think for a while</span></div><div class="line">                <span class="keyword">synchronized</span> (left) &#123;                    <span class="comment">// Grab left chopstick</span></div><div class="line">                    System.out.println(<span class="string">"Philosopher#"</span> + id + <span class="string">" take left Chopstick"</span>);</div><div class="line"></div><div class="line">                    <span class="keyword">synchronized</span> (right) &#123;                 <span class="comment">// Grab right chopstick</span></div><div class="line">                        System.out.println(<span class="string">"Philosopher#"</span> + id + <span class="string">" take right Chopstick"</span>);</div><div class="line">                        Thread.sleep( random.nextInt(<span class="number">1000</span>) ); <span class="comment">// Eat for a while</span></div><div class="line">                    &#125;</div><div class="line">                    System.out.println(<span class="string">"Philosopher#"</span> + id + <span class="string">" put right chopsticks"</span>);</div><div class="line">                &#125;</div><div class="line">                System.out.println(<span class="string">"Philosopher#"</span> + id + <span class="string">" put left chopsticks"</span>);</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>DiningPhilosophers.java</code><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.Random;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DiningPhilosophers</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">        Philosopher[] philosophers = <span class="keyword">new</span> Philosopher[<span class="number">5</span>];</div><div class="line">        Chopstick[] chopsticks     = <span class="keyword">new</span> Chopstick[<span class="number">5</span>];</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i)</div><div class="line">            chopsticks[i] = <span class="keyword">new</span> Chopstick();</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i) &#123;</div><div class="line">            philosophers[i] = <span class="keyword">new</span> Philosopher(chopsticks[i], chopsticks[(i + <span class="number">1</span>) % <span class="number">5</span>], i);</div><div class="line">            philosophers[i].start();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i)</div><div class="line">            philosophers[i].join();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个栗子属于可以锁得死死的那种。</p>
+<p>因为全局的多个代码块可能会共同使用一些锁，所以我们可以通过为所有的锁添加一个偏序关系，来避免死锁状态的产生。</p>
+<p><code>Philosopher.java</code><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Philosopher</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</div><div class="line">    <span class="keyword">private</span> Chopstick first, secound;</div><div class="line">    <span class="keyword">private</span> Random random;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Philosopher</span><span class="params">(Chopstick left, Chopstick right, <span class="keyword">int</span> id)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.id = id;</div><div class="line">        <span class="keyword">if</span> (left.getId() &lt; right.getId()) &#123;</div><div class="line">            <span class="keyword">this</span>.first = left; <span class="keyword">this</span>.second = right;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">this</span>.first = right; <span class="keyword">this</span>.second = left;</div><div class="line">        &#125;</div><div class="line">        random = <span class="keyword">new</span> Random();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">                Thread.sleep(random.nextInt(<span class="number">1000</span>));</div><div class="line">                <span class="keyword">synchronized</span>(first) &#123;</div><div class="line">                    System.out.println(<span class="string">"Philosopher#"</span> + id + <span class="string">" take Chopstick#"</span> + first.getId());</div><div class="line"></div><div class="line">                    <span class="keyword">synchronized</span>(second) &#123;</div><div class="line">                        System.out.println( <span class="string">"Philosopher#"</span> +</div><div class="line">                            id +<span class="string">" take Chopstick#"</span> + second.getId() );</div><div class="line">                        Thread.sleep( random.nextInt(<span class="number">1000</span>) );</div><div class="line">                    &#125;</div><div class="line">                    System.out.println(<span class="string">"Philosopher#"</span> + id + <span class="string">" put Chopstick#"</span> + second.getId());</div><div class="line">                &#125;</div><div class="line">                System.out.println(<span class="string">"Philosopher#"</span> + id + <span class="string">" put Chopstick#"</span> + first.getId());</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="外星方法"><a href="#外星方法" class="headerlink" title="外星方法"></a>外星方法</h4><p>这里我们构造有一个类从一个URL进行下载, 用<code>ProgressListeners</code>监听下载速度<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Downloader</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> InputStream in;</div><div class="line">    <span class="keyword">private</span> OutputStream out;</div><div class="line">    <span class="keyword">private</span> ArrayList&lt;ProgressListener&gt; listeners;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Downloader</span><span class="params">(URL url, String outputFilename)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        in = url.openConnect().getInputSteam();</div><div class="line">        out = <span class="keyword">new</span> FileOutputStream(outputFilename);</div><div class="line">        listeners = <span class="keyword">new</span> ArrayList&lt;ProgressListener&gt;();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">addListener</span><span class="params">(ProgressListener listener)</span> </span>&#123;</div><div class="line">        listeners.add(listener);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">removeListener</span><span class="params">(ProgressListener listener)</span> </span>&#123;</div><div class="line">        listeners.remove(listener);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">updateProgress</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">        <span class="keyword">for</span> (ProgressListener listener: listeners)</div><div class="line">            listener.onProgress(n);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> n = <span class="number">0</span>, total = <span class="number">0</span>;</div><div class="line">        <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">while</span> ( (n = in.read(buffer)) != -<span class="number">1</span> ) &#123;</div><div class="line">                out.write(buffer, <span class="number">0</span>, n);</div><div class="line">                total += n;</div><div class="line">                updateProgress(total);</div><div class="line">            &#125;</div><div class="line">            out.flush();</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><em>未完待续</em></p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/06/21/2015-06-21-seven-concurrency-models-in-seven-weeks-memory-visibility/">
+  <time datetime="2015-06-21T03:20:27.000Z">
+    2015-06-21
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/06/21/2015-06-21-seven-concurrency-models-in-seven-weeks-memory-visibility/">并发模型学习 (3)</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="优化的副作用"><a href="#优化的副作用" class="headerlink" title="优化的副作用"></a>优化的副作用</h4><p><img src="http://7xjra1.com1.z0.glb.clouddn.com/the thinker.jpg" alt="What is the meaning of my life?"></p>
+<p>由于没有通读过Ruby源码，无法确定这个Bug是否能用Ruby来复现，先用Java：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Puzzle</span> </span>&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">boolean</span> answerReady = <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> answer = <span class="number">0</span>;</div><div class="line">    <span class="keyword">static</span> Thread t1 = <span class="keyword">new</span> Thread() &#123;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            answer = <span class="number">42</span>;</div><div class="line">            answerReady = <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">    <span class="keyword">static</span> Thread t2 = <span class="keyword">new</span> Thread() &#123;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">if</span> (answerReady)</div><div class="line">                System.out.println(<span class="string">"The meaning of life is: "</span> + answer);</div><div class="line">            <span class="keyword">else</span></div><div class="line">                System.out.println(<span class="string">"I don't know the answer"</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">        t1.start(); t2.start();</div><div class="line">        t1.join(); t2.join();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>根据线程执行的时序，这段代码的输出可能是：<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">The meaning of life is: 42</div></pre></td></tr></table></figure></p>
+<p>或者是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">I don&apos;t know the answer</div></pre></td></tr></table></figure></p>
+<p>但是还有一种结果可能是：<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">The meaning of life is: 0</div></pre></td></tr></table></figure></p>
+<p>这说明了，当<code>answerReady</code>为<code>true</code>时<code>answer</code>可能为0！</p>
+<p>就好像第六行和第七行颠倒了执行顺序。但是乱序执行是完全可能发生的：</p>
+<ol>
+<li>编译器的静态优化可以打乱代码的执行顺序（编译原理）</li>
+<li>JVM的动态有话也会打乱代码的执行顺序（JVM）</li>
+<li>硬件可以通过乱序执行来优化其性能（计算机体系结构）</li>
+</ol>
+<p>比乱序执行更糟糕的时，有时一个线程产生的修改可能对另一个线程不可见，</p>
+<p>如果讲<code>run()</code>写成：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">while</span> (!answerReady)</div><div class="line">        Thread.sleep(<span class="number">100</span>);</div><div class="line">    System.out.println(<span class="string">"The meaning of life is: "</span> + answer);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>answerReady</code>可能不会变成<code>true</code>代码运行后无法退出。</p>
+<p>显然，我们需要一个明确的标准来告诉我们，优化会产生什么副作用影响，这就是<code>Java</code>内存模型(其他语言应该也有类似的东西)。Btw，经过本天才的多次试验，Ruby这边可以复现啦！！！</p>
+<p>复现代码：<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">require</span> <span class="string">'singleton'</span>  </div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Puzzle</span></span></div><div class="line">  <span class="keyword">include</span> Singleton</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">initialize</span></span></div><div class="line">    @answer_ready = <span class="literal">false</span></div><div class="line">    @answer       = <span class="number">0</span></div><div class="line">  <span class="keyword">end</span></div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">thread1</span></span></div><div class="line">    Thread.new <span class="keyword">do</span></div><div class="line">      @answer       = <span class="string">'eat'</span></div><div class="line">      @answer_ready = <span class="literal">true</span></div><div class="line">    <span class="keyword">end</span></div><div class="line">  <span class="keyword">end</span></div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">thread2</span></span></div><div class="line">    Thread.new <span class="keyword">do</span></div><div class="line">      meaning_of_life = <span class="string">"The meaning of life is: <span class="subst">#&#123;@answer&#125;</span>"</span></div><div class="line">      no_answer       = <span class="string">"I don't know the answer"</span></div><div class="line">      puts @answer_ready ? meaning_of_life : no_answer</div><div class="line">    <span class="keyword">end</span></div><div class="line">  <span class="keyword">end</span></div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span></div><div class="line">    [thread1, thread2].each(&amp;<span class="symbol">:join</span>)</div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line">Puzzle.instance.main</div></pre></td></tr></table></figure></p>
+<p>实验过程：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"></div><div class="line"><span class="keyword">while</span> [ <span class="string">"<span class="variable">$result</span>"</span> != <span class="string">"The meaning of life is: 0"</span> ]; <span class="keyword">do</span></div><div class="line">  result=<span class="string">"<span class="variable">$(ruby test.rb)</span>"</span></div><div class="line">  <span class="built_in">echo</span> <span class="variable">$result</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure></p>
+<p>实验结果：<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">➜  /tmp ruby:(system: ruby 2.1.5p273)</div><div class="line">$ sh test.sh</div><div class="line">The meaning of life is: eat</div><div class="line">The meaning of life is: eat</div><div class="line">I don't know the answer</div><div class="line">The meaning of life is: eat</div><div class="line">I don't know the answer</div><div class="line">I don't know the answer</div><div class="line">The meaning of life is: 0</div></pre></td></tr></table></figure></p>
+<h4 id="内存可见性"><a href="#内存可见性" class="headerlink" title="内存可见性"></a>内存可见性</h4><p><code>Java</code>内存模型定义了何时一个线程对内存的修改对另一个线程可见。基本原则是，如果读线程和写线程不进行同步，就不能保证可见性。</p>
+<p>除了<code>increment</code>之外，<code>count</code>的<code>getter</code>方法也需要进行同步。否则<code>count</code>方法可能获得一个失效的值：对于前面交互的两个线程，<code>conter</code>在<code>join</code>之后调用因此是线程安全的。但这种设计为其他调用<code>conter</code>的方法埋下了隐患。</p>
+<p>所以，「竞态条件」和「内存可见性」都可能让多线程程序运行结果出错。除此之外，还有一类问题：「死锁」。</p>
+<h3 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h3><p><em><a href="http://www.infoq.com/cn/articles/java-memory-model-1" target="_blank" rel="external">深入理解Java内存模型系列</a></em><br><em><a href="http://www.domaigne.com/blog/computing/mutex-and-memory-visibility/" target="_blank" rel="external">内存可见性</a></em></p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/06/20/2015-06-20-seven-concurrency-models-in-seven-weeks-mutex/">
+  <time datetime="2015-06-20T03:20:27.000Z">
+    2015-06-20
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/06/20/2015-06-20-seven-concurrency-models-in-seven-weeks-mutex/">并发模型学习 (2)</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h4 id="锁儿"><a href="#锁儿" class="headerlink" title="锁儿"></a>锁儿</h4><p>多个线程共享内存时，避免同时修改同一个部分内存造成的问题，需要用<strong>锁</strong>达到线程互斥的目的。某一时间，至多有一个线程持有锁。<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"> <span class="class"><span class="keyword">class</span> <span class="title">Counter</span></span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span></span></div><div class="line">        @count = <span class="number">0</span></div><div class="line">    <span class="keyword">end</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">increment</span></span></div><div class="line">        @count += <span class="number">1</span></div><div class="line">    <span class="keyword">end</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">count</span></span></div><div class="line">        @count</div><div class="line">    <span class="keyword">end</span></div><div class="line"> <span class="keyword">end</span></div><div class="line">counter = Counter.new</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">thread</span><span class="params">(counter)</span></span></div><div class="line">  <span class="number">10_000</span>.times &#123; counter.increment &#125;</div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line">t1 = Thread.new &#123; thread(counter) &#125;</div><div class="line">t2 = Thread.new &#123; thread(counter) &#125;</div><div class="line"></div><div class="line">[t1, t2].each(&amp;<span class="symbol">:join</span>)</div><div class="line">puts counter.count</div></pre></td></tr></table></figure></p>
+<p>执行结果<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">➜  /private/tmp ruby:(system: jruby 1.7.19)</div><div class="line">$ ruby test.rb</div><div class="line">13779</div><div class="line">➜  /private/tmp ruby:(system: jruby 1.7.19)</div><div class="line">$ ruby test.rb</div><div class="line">16440</div></pre></td></tr></table></figure></p>
+<p>这段代码创建了一个<code>counter</code>对象和两个线程，每个线程调用<code>counter.increment</code> 10,000次。这段代码看上去很简单，但很脆弱。</p>
+<p>几乎每次运行都将获得不同的结果，产生这个结果的原因是两个线程使用<code>counter.count</code>时发生了<strong>竞态条件</strong>（即代码行为取决于各操作的时序）</p>
+<p>我们来看一下Java编译器是如何解释<code>++count</code>的。其字节码：<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">getfield <span class="attr">#2</span> ;<span class="comment">//获取count的值</span></div><div class="line">ico<span class="symbol">nst_1</span>    ;<span class="comment">//设置加数</span></div><div class="line">iadd        ;<span class="comment">//count加设置好的加数</span></div><div class="line">putfield <span class="attr">#2</span> ;<span class="comment">//将更新的值写回count</span></div></pre></td></tr></table></figure></p>
+<p>这就是通称的<em>读-改-写</em>模式。</p>
+<p>如果两个线程同时调用<code>increment</code>，线程1执行<code>getfield #2</code>，获取值42。在线程1执行其他动作之前，线程2也执行了<code>getfield #2</code>，获得值42。不过，现在两个线程都将获得的值加1，将43写回count中。导致<code>count</code>只被增加了一次。</p>
+<p>竞态条件的解决方案：对<code>count</code>进行同步（synchronize）访问。<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span></span></div><div class="line">  <span class="keyword">attr_reader</span> <span class="symbol">:count</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">initialize</span></span></div><div class="line">    @count         = <span class="number">0</span></div><div class="line">    @counter_mutex = Mutex.new</div><div class="line">  <span class="keyword">end</span></div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">increment</span></span></div><div class="line">    @counter_mutex.synchronize &#123; @count += <span class="number">1</span> &#125;</div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">thread</span><span class="params">(counter)</span></span></div><div class="line">  <span class="number">10_000</span>.times &#123; counter.increment &#125;</div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line">counter = Counter.new</div><div class="line">t1 = Thread.new &#123; thread(counter) &#125;</div><div class="line">t2 = Thread.new &#123; thread(counter) &#125;</div><div class="line"></div><div class="line">[t1, t2].each(&amp;<span class="symbol">:join</span>)</div><div class="line">puts counter.count</div></pre></td></tr></table></figure></p>
+<p>执行结果<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">➜  /private/tmp ruby:(system: jruby 1.7.19)</div><div class="line">$ ruby test.rb</div><div class="line">20000</div></pre></td></tr></table></figure></p>
+<p>线程进入<code>increment</code>方法时，获得<code>counter_mutex</code>锁，函数返回的时候释放该锁。同一时间最多有一个进程可以执行函数体，其他线程调用方法时将被阻塞，直到锁被释放。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/06/20/2015-06-20-seven-concurrency-models-in-seven-weeks-thread/">
+  <time datetime="2015-06-20T01:20:27.000Z">
+    2015-06-20
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/06/20/2015-06-20-seven-concurrency-models-in-seven-weeks-thread/">并发模型学习 (1)</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h3 id="互斥和内存模型"><a href="#互斥和内存模型" class="headerlink" title="互斥和内存模型"></a>互斥和内存模型</h3><p>互斥：用锁保证某一时间仅有一个线程可以访问数据；<br>可能带来的麻烦：竞态条件和死锁。</p>
+<h4 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h4><p>并发的基本单元：线程，可以讲线程看做控制流；<br>线程间通信方式：共享内存。<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">say_hi</span><span class="params">(name)</span></span></div><div class="line">  puts <span class="string">"Hi <span class="subst">#&#123;name&#125;</span>!"</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">say_hi_to_folks</span><span class="params">(folks)</span></span></div><div class="line">  folks.inject([]) <span class="keyword">do</span> <span class="params">|threads_array, name|</span></div><div class="line">    threads_array &lt;&lt; Thread.new &#123; say_hi(name) &#125;</div><div class="line">  <span class="keyword">end</span>.each(&amp;<span class="symbol">:join</span>)</div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line">say_hi_to_folks <span class="string">%w(Larry Jack)</span></div></pre></td></tr></table></figure></p>
+<p>执行结果有可能是<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Hi Larry!</div><div class="line">Hi Jack!</div></pre></td></tr></table></figure></p>
+<p>或者是<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Hi Jack!</div><div class="line">Hi Larry!</div></pre></td></tr></table></figure></p>
+<p>多线程的运行结果依赖于时序，多次运行结果并不稳定。</p>
+<p><em>注：原书使用的Java例子中，两个线程分别为主线程和子线程，由于Ruby中没有相对应的让出线程方法<code>Thread.yield()</code>，而在Ruby中相接近的<code>Thread.pass</code>实验效果又很差，故而改由两个子线程举例（那你为啥要用Ruby？ 因为不用编译啊笨蛋，不过用的都是JRuby</em></p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/06/20/2015-06-20-leetcode-longestSubstringWithoutRepeatingCharacters/">
+  <time datetime="2015-06-19T16:20:27.000Z">
+    2015-06-20
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/06/20/2015-06-20-leetcode-longestSubstringWithoutRepeatingCharacters/">LeetCode: Longest Substring Without Repeating Characters 解题报告</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p><a href="https://leetcode.com/problems/longest-substring-without-repeating-characters/" target="_blank" rel="external">题目描述</a>:<br><em>Given a string, find the length of the longest substring without repeating characters. For example, the longest substring without repeating letters for “abcabcbb” is “abc”, which the length is 3. For “bbbbb” the longest substring is “b”, with the length of 1.</em></p>
+<hr>
+<p>分析：找到最长的不包含相同字母的字串</p>
+<p>题解：用一个队列来存储不含相同字母的子串，用一个hash来标记队列中已经使用过的字符。</p>
+<ol>
+<li>当发现即将入队的字符未被使用过时，入队，并在hash中标记下来；</li>
+<li>当发现即将入队的字符已经被使用过时，记下当前队列中字串的长度，取其与历史最大长度之间的最大值作为新的解。之后将队首的字符逐一出队，并在hash中清除标记，直道清除了即将入队的字符为止，最后字符入队。</li>
+<li>循环这个过程，直到所有的字符都被处理完成。</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</div><div class="line">        <span class="built_in">queue</span>&lt;<span class="keyword">char</span>&gt; current_sub_str;</div><div class="line">        <span class="keyword">int</span> sub_string_max_length = <span class="number">0</span>;</div><div class="line">        </div><div class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> it = s.begin() ; it &lt; s.end(); it++) &#123;</div><div class="line">            <span class="keyword">char</span> current_alphabet = *it;</div><div class="line">            </div><div class="line">            <span class="keyword">if</span> (isAlphabetExist(current_alphabet)) &#123;</div><div class="line">                syncMaxValue( sub_string_max_length, current_sub_str.size() );</div><div class="line">                popSubStringUntilAlphabet( current_alphabet, current_sub_str );</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                markAlphabet(current_alphabet);</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">            current_sub_str.push(current_alphabet);</div><div class="line">        &#125;</div><div class="line">        syncMaxValue( sub_string_max_length, current_sub_str.size() );</div><div class="line">        <span class="keyword">return</span> sub_string_max_length;</div><div class="line">    &#125;</div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> SIZE_OF_ASCII    = <span class="number">128</span>;</div><div class="line">    <span class="keyword">bool</span> alphabet_flag[SIZE_OF_ASCII] = &#123; <span class="literal">false</span> &#125;;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isAlphabetExist</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> alphabet)</span> <span class="keyword">const</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> alphabet_flag[<span class="keyword">int</span>(alphabet)];</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">syncMaxValue</span><span class="params">(<span class="keyword">int</span> &amp;sub_string_max_length, <span class="keyword">const</span> <span class="keyword">size_t</span> current_sub_string_length)</span> <span class="keyword">const</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (current_sub_string_length &gt; sub_string_max_length) &#123;</div><div class="line">            sub_string_max_length = <span class="keyword">int</span>(current_sub_string_length);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">popSubStringUntilAlphabet</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> alphabet, <span class="built_in">queue</span>&lt;<span class="keyword">char</span>&gt; &amp;current_sub_str)</span> </span>&#123;</div><div class="line">        <span class="keyword">for</span> ( <span class="keyword">char</span> current_alphabet = current_sub_str.front(); current_alphabet != alphabet;</div><div class="line">            alphabet_flag[<span class="keyword">int</span>(current_alphabet)] = <span class="literal">false</span>,</div><div class="line">            current_sub_str.pop(),</div><div class="line">            current_alphabet = current_sub_str.front()</div><div class="line">        );</div><div class="line">        current_sub_str.pop();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">markAlphabet</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> alphabet)</span> </span>&#123;</div><div class="line">        alphabet_flag[<span class="keyword">int</span>(alphabet)] = <span class="literal">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/06/20/2015-06-20-leetcode-addTwoNumbers/">
+  <time datetime="2015-06-19T16:10:27.000Z">
+    2015-06-20
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/06/20/2015-06-20-leetcode-addTwoNumbers/">LeetCode: Add Two Numbers 解题报告</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p><a href="https://leetcode.com/problems/add-two-numbers/" target="_blank" rel="external">题目描述</a>:<br><em>You are given two linked lists representing two non-negative numbers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.</em></p>
+<p><em>Input: (2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)</em><br><em>Output: 7 -&gt; 0 -&gt; 8</em></p>
+<hr>
+<p>分析：对两个链表进行带进位求和，若长度不一致填零</p>
+<p>题解：没什么算法，模拟。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstddef&gt;</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> &#123;</span></div><div class="line">    <span class="keyword">int</span> val;</div><div class="line">    ListNode *next;</div><div class="line">    ListNode(<span class="keyword">int</span> x) : val(x), next(<span class="literal">NULL</span>) &#123;&#125;</div><div class="line">&#125;;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function">ListNode* <span class="title">addTwoNumbers</span><span class="params">(ListNode* l1, ListNode* l2)</span> </span>&#123;</div><div class="line">        ListNode *ans_pointer = <span class="literal">NULL</span>, *ans_head = <span class="literal">NULL</span>;</div><div class="line">        </div><div class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</div><div class="line">        <span class="keyword">bool</span> carry_flag = <span class="literal">false</span>;</div><div class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</div><div class="line">            sum = getSum(getNodeVal(l1), getNodeVal(l2), carry_flag);</div><div class="line"></div><div class="line">            <span class="keyword">if</span> (ans_pointer) &#123;</div><div class="line">                ans_pointer-&gt;next = <span class="keyword">new</span> ListNode(sum);</div><div class="line">                ans_pointer       = ans_pointer-&gt;next;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                ans_head    = <span class="keyword">new</span> ListNode(sum);</div><div class="line">                ans_pointer = ans_head;</div><div class="line">            &#125;</div><div class="line">            nextPointer(l1);</div><div class="line">            nextPointer(l2);</div><div class="line">            <span class="keyword">if</span> ( !(l1 || l2) ) &#123;</div><div class="line">                <span class="keyword">if</span> (carry_flag) &#123; ans_pointer-&gt;next = <span class="keyword">new</span> ListNode(<span class="number">1</span>); &#125;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> ans_head;</div><div class="line">    &#125;</div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getNodeVal</span><span class="params">(<span class="keyword">const</span> ListNode* <span class="keyword">const</span> node)</span> <span class="keyword">const</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> node ? node-&gt;val : <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getSum</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> val1, <span class="keyword">const</span> <span class="keyword">int</span> val2, <span class="keyword">bool</span> &amp;carry_flag)</span> <span class="keyword">const</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> sum = val1 + val2 + carry_flag;</div><div class="line">        carry_flag = (sum &gt;= <span class="number">10</span>);</div><div class="line">        <span class="keyword">return</span> sum % <span class="number">10</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">nextPointer</span><span class="params">(ListNode* &amp;node)</span> <span class="keyword">const</span> </span>&#123;</div><div class="line">        node = node ? node-&gt;next : <span class="literal">NULL</span>;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/06/19/2015-06-19-leetcode-twoSum/">
+  <time datetime="2015-06-19T15:55:27.000Z">
+    2015-06-19
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/06/19/2015-06-19-leetcode-twoSum/">LeetCode: Two Sum 解题报告</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p><a href="https://leetcode.com/problems/two-sum/" target="_blank" rel="external">题目描述</a>:<br><em>Given an array of integers, find two numbers such that they add up to a specific target number.</em></p>
+<p><em>The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.</em></p>
+<p><em>You may assume that each input would have exactly one solution.</em></p>
+<p><em>Input: numbers={2, 7, 11, 15}, target=9</em><br><em>Output: index1=1, index2=2</em></p>
+<hr>
+<p>分析：题中要求找到数组<code>number</code>中“和”为<code>target</code>的两个元素对应的索引。</p>
+<p>题解：首先构造一个<code>Hash{ value-&gt;idx }</code>，之后遍历每个元素<code>Numbers[i]</code>对应的<code>Target - Numbers[i]</code>是否在<code>Hash Table</code>中，若存在则输出解。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unordered_map&gt;</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; twoSum(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;numbers, <span class="keyword">int</span> target) &#123;</div><div class="line">        <span class="built_in">std</span>::<span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; num_idx_map;</div><div class="line">        <span class="keyword">auto</span> n = numbers.size();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) num_idx_map[numbers[i]] = i + <span class="number">1</span>;</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) &#123;</div><div class="line">            <span class="keyword">if</span> ( num_idx_map.find(target - numbers[i]) != num_idx_map.end() ) &#123;</div><div class="line">                <span class="keyword">int</span> current_num_idx = i + <span class="number">1</span>;</div><div class="line">                <span class="keyword">int</span> match_num_idx   = num_idx_map[target - numbers[i]];</div><div class="line"></div><div class="line">                <span class="keyword">if</span> (match_num_idx != current_num_idx) <span class="keyword">return</span> &#123; current_num_idx,  match_num_idx &#125;;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/06/13/2015-06-13-octopress2hexo/">
+  <time datetime="2015-06-13T06:55:27.000Z">
+    2015-06-13
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/06/13/2015-06-13-octopress2hexo/">从Octopress迁移到Hexo</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>前阵子有幸地参与到一个 Road Map Project 从无到有的开发过程，整个项目做下来，感触很多。随着项目进入收官阶段，可以自由支配的时间渐渐多一些，准备有规律地更新博文。</p>
+<p><img src="http://7xjra1.com1.z0.glb.clouddn.com/galaxy_soho_sky.jpg" alt="难得一见的北京蓝"></p>
+<p>这次正式从<code>Octopress</code>迁移到<code>Hexo</code>，个人感觉<code>Hexo</code>更加的 Simple Stupid，从Setup到Deploy的过程相当流畅。</p>
+<p><del>关于Hexo的部署，国内朋友的最佳实践是同时发布在<code>Github</code>和<code>Gitcafe</code>上，之后通过<code>DNSpod</code>分散国内外的流量，保证访问速度。感兴趣的同学可以去读一下Reference中的两篇文章。</del></p>
+<p><del>我个人比较懒，并没有通过DNS来分流，只是单纯地在<code>Github</code>上备份<code>source</code>文件夹，将其软链到<code>Hexo</code>中。然后在<code>Gitcafe</code>上托管<code>Blog Site</code>。</del></p>
+<p><lable style="color: red">更新于：2015.6.23</lable><br>现在还是部署回Github，因为Gitcafe常常出现无法访问的情况。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://kuangqi.me/tricks/hexo-optimizations-for-mainland-china/" target="_blank" rel="external">Hexo Landscape主题的字体和JS库优化</a><br><a href="http://colobu.com/2014/10/13/hexo-supports-both-github-and-gitcafe/" target="_blank" rel="external">Hexo 同时支持Github和Gitcafe</a></p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/02/02/2015-02-02-team-working/">
+  <time datetime="2015-02-02T07:53:06.000Z">
+    2015-02-02
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/02/02/2015-02-02-team-working/">所谓工作经验</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在学校的时候，不理解为什么有些职位，对工作经验有很严苛的要求。因为我并不认为工作经验和技术能力之间存在这什么必然的联系。</p>
+<p>不过近些天来开始意识到：<b>工作经验真的不一定和技术能力成正比，但是和团队协作能力基本上是成正比的。</b></p>
+<p><img src="http://7xjra1.com1.z0.glb.clouddn.com/yzhu_jyshi_wdzhang.jpg" alt="可爱的Advertising Team同学们"></p>
+<p>到公司后，逐渐地参加到商业软件项目的开发中，通过这段时间的观察，发现到对于一个职业的软件工程师，需要具备的能力并不限于算法和工程问题。还要学会换位思考，站在多个角色的角度来看同一个问题，来保证顺畅的沟通。</p>
+<p>软件开发的流程中通常包含了：</p>
+<ul>
+<li>产品经理<ul>
+<li>需求分析文档</li>
+</ul>
+</li>
+<li>开发工程师<ul>
+<li>技术设计文档, 编码, 时间估算, 代码审查</li>
+</ul>
+</li>
+<li>测试工程师<ul>
+<li>用例设计文档, 时间估算, 自动化测试, 本地测试, 集成测试</li>
+</ul>
+</li>
+<li>运维工程师<ul>
+<li>部署上线</li>
+</ul>
+</li>
+</ul>
+<p>产品经理在做需求文档的时候，一定征求会开发人员的意见，来做出一个可行的产品设计。</p>
+<p>工程师在做技术文档设计和时间估算的时候，也会在团队中其他工程师的建议下，调整设计文档和<code>Story Point</code>预估，来保证设计的逻辑正确性以及可实施性。</p>
+<p>部署的过程更需要开发工程师和运维工程师完全地理解彼此的需求，才能保证项目上线不出差错。</p>
+<p>在每个环节，如果可以<b>理解每个角色对于一个项目的关切是什么</b>，定会催化团队内部的化学作用，提高团队产出的质量。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/01/19/2015-01-19-rails-mvc/">
+  <time datetime="2015-01-19T06:55:27.000Z">
+    2015-01-19
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/01/19/2015-01-19-rails-mvc/">[Rails] 所谓MVC</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>使用<code>MVC</code>的Web开发框架有很多，比如<code>PHP</code>的<code>Zend</code>，<code>Python</code>的<code>Django</code>和<code>Golang</code>的<code>Beego</code>。这篇文章主要介绍一下<code>MVC</code>的基本概念。</p>
+<h2 id="何为MVC"><a href="#何为MVC" class="headerlink" title="何为MVC"></a>何为MVC</h2><p>为了明确一个<code>Web Application</code>中各个部分的职责，我们人为规定三个层级：控制器（Controller），模型（Model）和视图（View），这是一种设计上的解耦。</p>
+<p>为了直观地解释这三个层级的概念，我们假设这它们分别对应代码层面的三个类：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooModel</span></span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooView</span></span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooController</span></span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<h4 id="调度器（Controller）-–-完整的request生命周期"><a href="#调度器（Controller）-–-完整的request生命周期" class="headerlink" title="调度器（Controller） – 完整的request生命周期"></a>调度器（Controller） – 完整的request生命周期</h4><p>我们可以简单的理解为：用户在浏览器上输入的每个合法的URL，都将被映射到Controller类上的一个实例方法。该实例方法是一次<code>request</code>的<strong>入口</strong>，负责调度程序的各个部分，返回<code>web response</code>给浏览器。</p>
+<p>所谓入口，指的是一次访问的<b>整个生命周期，都随着这个方法的开始而开始，结束而结束。</b>从这个角度来看，我们完全可以不使用模型和视图，就能完成一个Web应用。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Rails中URL和实例方法的映射关系在routes.rb中设置</span></div><div class="line"><span class="comment"># 比如 '/index' =&gt; Controller#index 可以规定:</span></div><div class="line"><span class="comment">#   当用户在browser中输入"http://yoursiteurl.com/index"时</span></div><div class="line"><span class="comment">#   执行Controller类的index方法</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooController</span></span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">index</span></span></div><div class="line">    @counter = @counter ? @counter + <span class="number">1</span> : <span class="number">0</span> </div><div class="line"></div><div class="line">    render <span class="symbol">html:</span> <span class="string">"&lt;p&gt;你是该网站的第<span class="subst">#&#123;@counter&#125;</span>名访客&lt;/p&gt;"</span>.html_safe</div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<h4 id="模型（Model）-–-数据持久化存储"><a href="#模型（Model）-–-数据持久化存储" class="headerlink" title="模型（Model） – 数据持久化存储"></a>模型（Model） – 数据持久化存储</h4><p>我们可以看到，在一次request结束后，Controller实例方法中分配的内存会被回收，无法再次被使用。为了能够将Controller处理过程中的数据在今后继续使用，我们需要对这部分数据进行持久化存储。</p>
+<p>所以我们期望有一个类，他的所有变量都永远不会消失。同时，我们还希望它可以提取对数据操作的逻辑（如例中的counter计数），方便今后复用。我们将它叫做模型（Model），至于它如何做到所有的变量永不消失，我们回头再讲。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooModel</span></span></div><div class="line">  <span class="comment"># ...</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">counter</span></span></div><div class="line">    @counter = @counter ? @counter + <span class="number">1</span> : <span class="number">0</span> </div><div class="line">    save <span class="comment"># 持久化存储，具体实现细节在后面的文章会讲</span></div><div class="line"></div><div class="line">    @counter</div><div class="line">  <span class="keyword">end</span></div><div class="line">  <span class="comment"># ...</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooController</span></span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">index</span></span></div><div class="line">    model = FooModel.new</div><div class="line">    render <span class="symbol">html:</span> <span class="string">"&lt;p&gt;你是该网站的第<span class="subst">#&#123;model.counter&#125;</span>名访客&lt;/p&gt;"</span>.html_safe</div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<h4 id="视图（View）-–-页面展示"><a href="#视图（View）-–-页面展示" class="headerlink" title="视图（View） – 页面展示"></a>视图（View） – 页面展示</h4><p>在上面的两个例子中都出现了类似<code>render html: xxx</code>之类的代码。如果我们不想在Controller中出现HTML代码，可以把它放在View层。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooModel</span></span></div><div class="line">  <span class="comment"># ...</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">counter</span></span></div><div class="line">    @counter = @counter ? @counter + <span class="number">1</span> : <span class="number">0</span> </div><div class="line">    save <span class="comment"># 持久化存储，具体实现细节在后面的文章会讲</span></div><div class="line"></div><div class="line">    @counter</div><div class="line">  <span class="keyword">end</span></div><div class="line">  <span class="comment"># ...</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooView</span></span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(counter)</span></span></div><div class="line">    <span class="string">"&lt;p&gt;你是该网站的第<span class="subst">#&#123;counter&#125;</span>名访客&lt;/p&gt;"</span></div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FooController</span></span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">index</span></span></div><div class="line">    model = FooModel.new</div><div class="line">    view  = FooView.new</div><div class="line"></div><div class="line">    render <span class="symbol">html:</span> view.index(model.counter).html_safe</div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<h3 id="小节"><a href="#小节" class="headerlink" title="小节"></a>小节</h3><p><em>1. 调度器（Controller）对于一个程序来说是必须存在的，它负责得到输入，返回输出</em><br><em>2. 我们用模型（Model）这个概念来<strong>抽象</strong>调度器（Controller）中，关于<strong>数据存取、逻辑运算</strong>相关的代码，以便独立地维护它们。</em><br><em>3. 我们用视图（View）这个概念来<strong>抽象</strong>调度器（Controller）中，关于<strong>数据展示格式</strong>相关的代码，以便独立地维护它们。</em></p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/" class="prev">Prev</a>
+  
+  
+    <a href="/page/3/" class="next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+
+</div>
+  </div>
+  
+  <div id="sidebar" class="widgets-bottom">
+  
+<div class="widget category">
+  <h3 class="title">categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/开发工具/">开发工具</a><small>2</small></li>
+  
+    <li><a href="/categories/技术日志/">技术日志</a><small>2</small></li>
+  
+    <li><a href="/categories/流程方法/">流程方法</a><small>3</small></li>
+  
+    <li><a href="/categories/程序开发/">程序开发</a><small>6</small></li>
+  
+    <li><a href="/categories/解题报告/">解题报告</a><small>3</small></li>
+  
+    <li><a href="/categories/读书报告/">读书报告</a><small>14</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">tagcloud</h3>
+  <div class="entry">
+    <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/activemq/" style="font-size: 10px;">activemq</a> <a href="/tags/c/" style="font-size: 18px;">c++</a> <a href="/tags/c-primer-plus/" style="font-size: 18px;">c++ primer plus</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/dispatcher/" style="font-size: 10px;">dispatcher</a> <a href="/tags/gitcafe/" style="font-size: 10px;">gitcafe</a> <a href="/tags/hash/" style="font-size: 12px;">hash</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/tags/leetcode/" style="font-size: 14px;">leetcode</a> <a href="/tags/linked-list/" style="font-size: 10px;">linked list</a> <a href="/tags/octopress/" style="font-size: 10px;">octopress</a> <a href="/tags/rails/" style="font-size: 18px;">rails</a> <a href="/tags/rake/" style="font-size: 10px;">rake</a> <a href="/tags/route/" style="font-size: 10px;">route</a> <a href="/tags/ruby/" style="font-size: 10px;">ruby</a> <a href="/tags/tree/" style="font-size: 10px;">tree</a> <a href="/tags/unicorn/" style="font-size: 10px;">unicorn</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/学习报告/" style="font-size: 16px;">学习报告</a> <a href="/tags/工作经验/" style="font-size: 10px;">工作经验</a> <a href="/tags/并发/" style="font-size: 16px;">并发</a> <a href="/tags/并行/" style="font-size: 16px;">并行</a> <a href="/tags/心理/" style="font-size: 14px;">心理</a> <a href="/tags/读书报告/" style="font-size: 20px;">读书报告</a>
+  </div>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">recent_posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2017/04/16/2017-04-16-recent-thinking/">記錄最近的所思所想</a>
+      </li>
+    
+      <li>
+        <a href="/2016/12/28/2016-12-28-2016/">二零一六</a>
+      </li>
+    
+      <li>
+        <a href="/2016/11/11/2016-11-11-cpp-brief-history/">C++ 简史</a>
+      </li>
+    
+      <li>
+        <a href="/2016/05/18/2016-05-18-charlie-munger-on-the-psychology-of-human-misjudgment-three/">人类误判心理（3）</a>
+      </li>
+    
+      <li>
+        <a href="/2015/11/13/2015-11-13-the-core-value-of-sde/">软件工程师的核心价值</a>
+      </li>
+    
+  </ul>
+</div>
+
+</div>
+  
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2017 <a href="/">Bai, Yu</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://blog.dafengning.com/" target="_blank">Chong Zi</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//lib.sinaapp.com/js/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var disqus_shortname = 'everkeyword';
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  }());
+</script>
+
+
+<div id="rightfix" style="display:none;">
+
+
+<a href="javascript:void(0)" id="gotop" class="fix_btn" onclick="gotop();" title="回到顶部"><i></i></a>
+<script>
+  function gotop(){
+    $('html,body').animate({
+        scrollTop : '0px'
+      }, 800);
+  }
+  $(function(){
+    _rightfix = $('#rightfix');
+    $(window).scroll(function(){
+      $sollTop = document.documentElement.scrollTop + document.body.scrollTop;
+      if($sollTop > 350){
+        _rightfix.show();
+      }else{
+        _rightfix.hide();
+      }
+    });
+  });
+</script>
+
+</div>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

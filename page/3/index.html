@@ -1,0 +1,741 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>White</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="Bai, Yu">
+  
+  
+  <meta property="og:type" content="website">
+<meta property="og:title" content="White">
+<meta property="og:url" content="http://www.everkeyword.com/page/3/index.html">
+<meta property="og:site_name" content="White">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="White">
+  
+    <link rel="alternate" href="/atom.xml" title="White" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script><![endif]-->
+  
+  
+</head>
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">White</a></h1>
+    <p><a href="/">There&#39;s no magic in this world.</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/about">About</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content">
+
+
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/01/16/2015-01-16-rails-for-newbee/">
+  <time datetime="2015-01-16T10:41:44.000Z">
+    2015-01-16
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/01/16/2015-01-16-rails-for-newbee/">[Rails] 学习报告</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>在阅读这个系列文章之前，希望读者对于网络开发有一些了解，最好能够先完成以下课程的学习： </p>
+<blockquote>
+<p><a href="http://v.163.com/special/opencourse/cs50.html" target="_blank" rel="external">哈佛大学公开课：计算机科学cs50</a> (Web部分)<br><a href="http://v.163.com/special/opencourse/buildingdynamicwebsites.html" target="_blank" rel="external">哈佛大学公开课：构建动态网站</a></p>
+</blockquote>
+<p>其实，终究Rails只是一个框架，他只是一种设计思想的实体化的产物。你不能说傻学怎么用这个框架，所以你不能一上来就直接学各种Rails的feature。</p>
+<p>最好的学习方法，是学习这个框架的设计思路。因为如果这样，即使之后<strong>你们不再使用rails，你也可以用ruby开发或者组装出另一套新的框架。甚至如果你们不再使用ruby，你也可以用其他语言，写出基于另一个语言的开发框架。这些都超越了语言和框架的本身，是大家共性的东西，是精髓。</strong>而且就我个人来讲，这个概念可以更广义地应用到更多的方面，此处不多深入，有机会时会写一篇文章。</p>
+<blockquote>
+<p>[Rails] <a href="/2015/01/19/2015-01-19-rails-mvc/">所谓MVC</a><br>[Rails] <a href="/2015/06/26/2015-06-26-rails-dispatcher/">从Request到Response</a></p>
+</blockquote>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/01/09/2015-01-09-donot-sudo-brew/">
+  <time datetime="2015-01-09T01:34:22.000Z">
+    2015-01-09
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/01/09/2015-01-09-donot-sudo-brew/">sudo brew install</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>近些天来一直受到一个问题的困扰，在执行<code>activemq start</code>后，能够看到进程已经启动，然而根本没有什么卵用，完全连不上<code>localhost:8161/admin/</code>。改成<code>sudo activemq start</code>，问题就解决了。</p>
+<p>今天终于发现了问题的原因：当初我在用<code>brew</code>安装<code>activemq</code>的时候就是用的是：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo brew install activemq</div></pre></td></tr></table></figure></p>
+<p>而正确的安装方式是：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ brew install activemq</div></pre></td></tr></table></figure></p>
+<p>解决方案：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ brew reinstall activemq</div></pre></td></tr></table></figure></p>
+<p>如果再这么做的话，这个世界，就清静了：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ brew reinstall `brew list`</div></pre></td></tr></table></figure></p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/01/04/2015-01-04-always-wirting/">
+  <time datetime="2015-01-04T15:06:48.000Z">
+    2015-01-04
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/01/04/2015-01-04-always-wirting/">关于Everkeyword</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h3 id="为什么叫Everkeyword"><a href="#为什么叫Everkeyword" class="headerlink" title="为什么叫Everkeyword"></a>为什么叫Everkeyword</h3><p>学生时期，比较爱想，有过一个创业的Idea。当时就觉得Everkeyword这个名字非常适合想象中的“产品”。从那时候开始，就一直想把这个域名注册下来。</p>
+<h3 id="Everkeyword是做什么的"><a href="#Everkeyword是做什么的" class="headerlink" title="Everkeyword是做什么的"></a>Everkeyword是做什么的</h3><p>Everkeyword现在是我的个人技术博客，而不再是那个产品。我会在上面分享一些技术方面的心得体会。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/09/07/2014-09-07-metaprogramming-ruby/">
+  <time datetime="2014-09-07T03:19:11.000Z">
+    2014-09-07
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/09/07/2014-09-07-metaprogramming-ruby/">Ruby Metaprogramming</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <blockquote>
+<p>Bill is a good mentor.</p>
+</blockquote>
+<p>长达三个月的培训过程，过得非常的舒心。在中后段期间，每天下午都能抽出一段时间，读一读《Ruby元编程》。</p>
+<p>读过这本书的人，应该都会爱上Ruby这门语言，并且理解它为何要设计成这个样子。书中的描写十分生动，有时甚至会让人觉得，自己真的和Bill工作在一起，每天在他的身上学习新的知识。找时间写一篇这本书的读书报告。</p>
+<blockquote>
+<p>目录<br>第一部分 Ruby元编程</p>
+<ul>
+<li>对象模型</li>
+<li>方法</li>
+<li>代码块</li>
+<li>类定义</li>
+<li>编写代码的代码</li>
+</ul>
+<p>第二部分 “Rails中的元编程”</p>
+<ul>
+<li>ActiveRecord的设计</li>
+<li>深入ActiveRecord</li>
+<li>安全元编程 </li>
+</ul>
+</blockquote>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/08/02/2014-08-02-wirte-rails-by-using-vim/">
+  <time datetime="2014-08-02T00:21:31.000Z">
+    2014-08-02
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/08/02/2014-08-02-wirte-rails-by-using-vim/">Rails开发常用Vim插件</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>看<a href="http://Railscasts-china.com" target="_blank" rel="external">RailsCast China</a>的时候，收集了一些常用来写Ruby on Rails的Vim插件:</p>
+<ul>
+<li><a href="http://www.vim.org/scripts/script.php?script_id=3025" target="_blank" rel="external">commandT</a><br>功能: 与Sublime的commandT快捷键类似，可以实现当前项目文件查找</li>
+<li><p><a href="http://kien.github.com/ctrlp.vim/" target="_blank" rel="external">CtrlP</a><br>功能: 实现文件的查找，并快速切换；<br>“CommandT”和”CtrlP”的功能基本一致，顾名思义，通过快捷键”command+T”和”Ctrl+P”，呼叫插件。</p>
+</li>
+<li><p><a href="http://www.vim.org/scripts/script.php?script_id=1567" target="_blank" rel="external">Rails.vim</a><br>常用功能:<br>“:Rfind/:1R/:find”: 可以用来查找目录中的文件<br>“:Rfunctionaltest”: 跳转到单元测试<br>“:RController”: 跳转到Controller<br>“:RVfunctionaltest”: (横屏分屏)打开单元测试<br>“gf”: 代码上线文相关跳转<br>详见文档</p>
+</li>
+<li><p><a href="http://www.vim.org/scripts/script.php?script_id=2540" target="_blank" rel="external">snipMate</a><br>功能: 输入简写展开<br>例: ‘bt’+Tab-&gt;‘belongs_to’, ‘hm’+Tab-‘has_many’, ‘rp’+Tab-&gt;“render :partial =&gt; ‘item’”, …<br>ruby.snippets文件中有各个简写展开形式的记录，也可以通过改写这个文件，自定义展开形式</p>
+</li>
+<li><p><a href="https://github.com/mileszs/ack.vim" target="_blank" rel="external">ack.vim</a><br>功能: 根据文件内容查找文件，并切换文件<br>例: “:Ack ‘pattern’”</p>
+</li>
+<li><p><a href="http://www.vim.org/scripts/script.php?script_id=1658" target="_blank" rel="external">The NERD tree</a><br>功能: 显示文件目录;</p>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference:"></a>Reference:</h2><p>Rails with Vim : <a href="http://Railscasts-china.com/episodes/Rails-with-vim" target="_blank" rel="external">http://Railscasts-china.com/episodes/Rails-with-vim</a></p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2012/03/10/2012-03-10-cpp-primer-plus-11/">
+  <time datetime="2012-03-10T07:21:31.000Z">
+    2012-03-10
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2012/03/10/2012-03-10-cpp-primer-plus-11/">C++ PRIMER PLUS (11)</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h2 id="第11章-使用类"><a href="#第11章-使用类" class="headerlink" title="第11章 使用类"></a>第11章 使用类</h2><h3 id="11-1-操作符重载"><a href="#11-1-操作符重载" class="headerlink" title="11.1 操作符重载"></a>11.1 操作符重载</h3><p>操作符重载时一种形式的C++多态，函数原型：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function">Type_name <span class="keyword">operator</span> <span class="title">op</span> <span class="params">(argument-<span class="built_in">list</span>)</span></span>;</div></pre></td></tr></table></figure></p>
+<p><code>Type_name operator op</code>相当于函数名，<code>(argument-list)</code>相当于参数列表，<code>Type_name</code>相当于返回值，只是在调用的时候可省去函数后的括号和函数名中<code>operator</code>（不省也行，如<code>strsum = str1.operator+(str2);</code>）</p>
+<p>第一个参数通过<code>this</code>指针隐式传递</p>
+<h3 id="11-3-友元简介"><a href="#11-3-友元简介" class="headerlink" title="11.3 友元简介"></a>11.3 友元简介</h3><p>在左侧的操作数不是调用对象时，可使用非成员函数<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">A = <span class="number">2.75</span> * B; <span class="comment">// can not correspond to a mumber fuction</span></div><div class="line">A = <span class="keyword">operator</span>*(<span class="number">2.75</span>, B); <span class="comment">// can correspond to a mumber fuction</span></div></pre></td></tr></table></figure></p>
+<p>函数原型如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Time <span class="keyword">operator</span>* (<span class="keyword">double</span> m, <span class="keyword">const</span> Time &amp;t);</div></pre></td></tr></table></figure></p>
+<p>但这引发了一个新问题，非成员函数不能访问类的私有数据。<br>创建友元函数要先将其原型放在类声明中，并在前面加上关键字<code>friend</code>：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">friend</span> Time <span class="keyword">operator</span>* (<span class="keyword">double</span> m, <span class="keyword">const</span> Time &amp;t);</div></pre></td></tr></table></figure></p>
+<p>友元函数不能使用成员操作符调用，但与成员函数访问权限相同<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Time <span class="keyword">operator</span>* (<span class="keyword">double</span> m, <span class="keyword">const</span> Time &amp;t)</div><div class="line">&#123;</div><div class="line">       <span class="keyword">return</span> t * m;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>重载<code>&lt;&lt;</code>操作符</p>
+<p>第一种版本，定义友元函数：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> <span class="keyword">operator</span>&lt;&lt; (ostream &amp;os, <span class="keyword">const</span> Time &amp;t)</div><div class="line">&#123;</div><div class="line">       os &lt;&lt; t.hours &lt;&lt; <span class="string">"hours, "</span> &lt;&lt; t.minutes &lt;&lt; <span class="string">"minutes"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>os</code>可以暂时理解为<code>cout</code>的别名</p>
+<h3 id="11-5-再谈重载：矢量类"><a href="#11-5-再谈重载：矢量类" class="headerlink" title="11.5 再谈重载：矢量类"></a>11.5 再谈重载：矢量类</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">shove.<span class="built_in">set</span>(<span class="number">100</span>, <span class="number">300</span>); <span class="comment">//直接设置</span></div><div class="line">shove = Vector(<span class="number">100</span>, <span class="number">300</span>) <span class="comment">// Vector为类名，此方法使用构造函数创建一个临时对象，让后赋给shove</span></div></pre></td></tr></table></figure>
+<p>一元负号操作符<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Vector Vector::<span class="keyword">operator</span>-() <span class="keyword">const</span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">return</span> Vector(-x, -y);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="11-6-类的自动转换和强制类型转换"><a href="#11-6-类的自动转换和强制类型转换" class="headerlink" title="11.6 类的自动转换和强制类型转换"></a>11.6 类的自动转换和强制类型转换</h3><p>只接受一个参数的构造函数如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Stonewt (<span class="keyword">double</span> lbs);</div></pre></td></tr></table></figure></p>
+<p>可隐式转换<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Stonewt mycat;</div><div class="line">mycat = <span class="number">19.6</span>; <span class="comment">//程序调用Stonewt(double)来创建临时对象，然后赋值</span></div><div class="line"><span class="comment">// 但这种类型并不总合乎需要，可用explicit来关闭这种特性</span></div><div class="line"><span class="function"><span class="keyword">explicit</span> <span class="title">Stonewt</span><span class="params">(<span class="keyword">double</span> lbs)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>这将关闭上例的隐式转换，但仍然允许显式强制转换<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Stonewt myCat；</div><div class="line">myCat = Stonewt(<span class="number">19.6</span>);</div><div class="line">myCat = (Stonewt) <span class="number">19.6</span>;</div></pre></td></tr></table></figure></p>
+<p>现在研究如何将对象转换为数字<br>转换函数：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">operator</span> <span class="title">typeName</span><span class="params">()</span></span>;</div></pre></td></tr></table></figure></p>
+<p>注意：</p>
+<ul>
+<li>转换函数必须是类方法</li>
+<li>转换函数不能指定返回类型</li>
+<li>转换函数不能有参数</li>
+</ul>
+<p>例如，转换为double的函数原型<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">operator</span> <span class="title">double</span><span class="params">()</span></span>;</div></pre></td></tr></table></figure></p>
+<p>如果该类值定义了一个转换函数，则可以直接用<code>cout</code>输出该类(<code>&lt;&lt;</code>未重载。否则编译器将认为语句有二义性而拒绝它，只能在前增加强制类型转换<br>转换函数也有其优缺点，如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> ar[<span class="number">20</span>];</div><div class="line">……</div><div class="line"><span class="function">Stonewt <span class="title">temp</span><span class="params">(<span class="number">14</span>, <span class="number">4</span>)</span></span>;</div><div class="line"><span class="keyword">int</span> Temp = <span class="number">1</span>;</div><div class="line"><span class="built_in">cout</span> &lt;&lt; ar[temp];</div></pre></td></tr></table></figure></p>
+<p>这种误用对象为索引之类的错误不会被编译器发现，而转换函数又不能用<code>explicit</code>来关闭隐式转换<br>解决方法是定义一个功能相同的非转换函数<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> Stonest::Stone_to_Int()</div><div class="line">&#123;</div><div class="line">       <span class="keyword">return</span> <span class="keyword">int</span>(pounds + <span class="number">0</span>,<span class="number">5</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在<code>main</code>上面定义的全局对象的构造函数会先于<code>main</code>运行</p>
+<p><em>第十一章结束</em></p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2012/03/10/2012-03-10-cpp-primer-plus-10/">
+  <time datetime="2012-03-10T02:21:31.000Z">
+    2012-03-10
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2012/03/10/2012-03-10-cpp-primer-plus-10/">C++ PRIMER PLUS (10)</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h2 id="第10章-对象和类"><a href="#第10章-对象和类" class="headerlink" title="第10章 对象和类"></a>第10章 对象和类</h2><h3 id="OOP特性："><a href="#OOP特性：" class="headerlink" title="OOP特性："></a>OOP特性：</h3><ul>
+<li>抽象</li>
+<li>封装和数据隐藏</li>
+<li>多态</li>
+<li>继承</li>
+<li>代码的可重用性</li>
+</ul>
+<h3 id="10-1-过程性编程和面向对象编程"><a href="#10-1-过程性编程和面向对象编程" class="headerlink" title="10.1 过程性编程和面向对象编程"></a>10.1 过程性编程和面向对象编程</h3><h3 id="10-2-抽象和类"><a href="#10-2-抽象和类" class="headerlink" title="10.2 抽象和类"></a>10.2 抽象和类</h3><h3 id="10-3-类的构造函数和析构函数"><a href="#10-3-类的构造函数和析构函数" class="headerlink" title="10.3 类的构造函数和析构函数"></a>10.3 类的构造函数和析构函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> stock::show() <span class="keyword">const</span> <span class="comment">//promises note change invoking object</span></div></pre></td></tr></table></figure>
+<p>这种方法声明和定义的类函数成为<code>const</code>成员函数，只要类方法不修改调用对象，就应该将其声明为<code>const</code>。因为形如<code>show()</code>的方法没有形参，不能用<code>const</code>引用或<code>const</code>指针来避免修改对象。</p>
+<p>在当前类的方法中<code>*this</code>可作为当前类的别名进行修改或访问。</p>
+<h3 id="10-7-类的作用域"><a href="#10-7-类的作用域" class="headerlink" title="10.7 类的作用域"></a>10.7 类的作用域</h3><p>在类中定义常量的方式——使用关键字<code>static</code>:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">stock</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">private</span>:</div><div class="line">       <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> len = <span class="number">30</span>;</div><div class="line">       …</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p><em>第十章结束</em></p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2012/02/21/2012-02-21-cpp-primer-plus-9/">
+  <time datetime="2012-02-21T02:21:31.000Z">
+    2012-02-21
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2012/02/21/2012-02-21-cpp-primer-plus-9/">C++ PRIMER PLUS (9)</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h2 id="第九章-内存模型和名称空间"><a href="#第九章-内存模型和名称空间" class="headerlink" title="第九章 内存模型和名称空间"></a>第九章 内存模型和名称空间</h2><h3 id="9-1-单独编译"><a href="#9-1-单独编译" class="headerlink" title="9.1 单独编译"></a>9.1 单独编译</h3><p>头文件：包含结结构声明和使用这些结构的函数原型。</p>
+<p>源代码文件：包含与机构有关的函数代码。</p>
+<p>源代码文件：包含调用与结构相关的函数的代码。</p>
+<p>头文件中包含的内容：</p>
+<ul>
+<li>函数原型</li>
+<li>使用<code>#define</code>或<code>const</code>定义的符号常量</li>
+<li>结构声明</li>
+<li>类声明    </li>
+<li>模板声明</li>
+<li>内联函数</li>
+<li>多个库的连接：在连接编译模块时，请确保所有对象文件或库都是有同一个编译器生成的。因为C++标准允许每个编译器设计人员以他认为合适的方式实现名称修饰。</li>
+</ul>
+<h3 id="9-2-存储持续性、作用于和连接性"><a href="#9-2-存储持续性、作用于和连接性" class="headerlink" title="9.2 存储持续性、作用于和连接性"></a>9.2 存储持续性、作用于和连接性</h3><p>自动变量：在函数中声明的变量<br>静态变量：在函数定义外定义和使用<code>static</code>定义的变量<br>动态变量：用<code>new</code>和<code>delete</code>分配和删除的变量</p>
+<h4 id="9-2-1-作用域和连接"><a href="#9-2-1-作用域和连接" class="headerlink" title="9.2.1 作用域和连接"></a>9.2.1 作用域和连接</h4><p>作用域为局部的变量只在定义它的代码块（<code>{</code>,<code>}</code>之间）可用。<br>在函数原型作用域中使用的名称只在包含参数列表的括号内可用。</p>
+<h4 id="9-2-2-自动存储持续性"><a href="#9-2-2-自动存储持续性" class="headerlink" title="9.2.2 自动存储持续性"></a>9.2.2 自动存储持续性</h4><p>局部变量名和全局变量名相同时，将暂时隐藏之前的全集定义。<br>关键字auto用于定义默认状态向为自动的变量，有时可用来向读者澄清代码的含义，比如程序中他一创建了一个自动变量，它将覆盖全局定义。<br>编译器使用堆栈来管理自动内存。<br>用register关键字来声明局部变量将提醒编译器通过使用CPU寄存器来处理该变量，但编译器并不一定会满足上述请求。</p>
+<p>注意：寄存器变量没有内存地址。</p>
+<h4 id="9-2-3-静态持续变量"><a href="#9-2-3-静态持续变量" class="headerlink" title="9.2.3 静态持续变量"></a>9.2.3 静态持续变量</h4><p>如果没有显式初始化，编译器将把它设置为0。</p>
+<p>只能使用常量表达式来初始化静态变量：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> x; <span class="comment">// x set to 0</span></div><div class="line"><span class="keyword">int</span> y = <span class="number">49</span>; <span class="comment">//49 is a constant expression</span></div><div class="line"><span class="keyword">int</span> z = <span class="number">2</span> * <span class="keyword">sizeof</span>(<span class="keyword">int</span>) + <span class="number">1</span>;<span class="comment">// also a constant expression</span></div><div class="line"><span class="keyword">int</span> m = <span class="number">2</span> * z; <span class="comment">// incalud, z not a constant</span></div></pre></td></tr></table></figure></p>
+<p>通常情况下应使用局部变量，在需要知晓时才传递数据。</p>
+<p>对于外部链接性变量，有且只有一个文件包含了该变量的外部定义。其他文件要使用该变量，必须在引用声明中使用关键字<code>extern</code>。</p>
+<p>如果文件定义了一个静态外部变量，其名称与另一个文件中声明的常规外部变量相同，则在该文件中，静态变量将隐藏常规外部变量。</p>
+<p>当吧作用域解析操作符<code>::</code>放在变量名称前面是，表示使用变量的全局版本。</p>
+<p>将<code>static</code>限定符用于全局变量时，该变量的链接性将为内部的，只能在其所属文件中使用。<br>如果初始化了静态局部变量，则程序只在启动时进行一次初始化。</p>
+<p>通常，编译器去假设未被修改的值在两次使用时之间不会发生变化，将该值缓存，以优化。<code>Volatile</code>声明相当于告诉编译器，不要进行这种优化（因为硬件可能修改变量）。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">data</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">char</span> name[<span class="number">30</span>];</div><div class="line">       <span class="keyword">mutable</span> <span class="keyword">int</span> accesses;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">const</span> data veep = &#123;<span class="string">"Claybourne Clodde"</span>, <span class="number">0</span>,…&#125;;</div><div class="line"><span class="built_in">strcpy</span>(veep.name, <span class="string">"Joye Joux"</span>); <span class="comment">//not allowed</span></div><div class="line">veep.accesses++; <span class="comment">//allowed</span></div></pre></td></tr></table></figure></p>
+<p><code>veep</code>的<code>const</code>限定符禁止程序修改<code>veep</code>的成员，但<code>accesses</code>成员的<code>mutable</code>说明符是的<code>accesses</code>不受这种限制。<br><code>const</code>全局变量的链接性为内部的，因此可以在所有文件中使用相同的声明<br>若希望某个常量的链接性为外部的，必须在所有使用该变量的文件中使用<code>extern</code>关键字来声明它<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> states = <span class="number">50</span>; <span class="comment">// external linkage</span></div></pre></td></tr></table></figure></p>
+<p>可以再函数原型中使用关键字<code>extern</code>来指出函数是在另一个文件中定义的，不过这是可选的。<br>还可以使用关键字<code>static</code>将函数的链接性设置为内部的，必须同时在原型和函数定义中使用该关键字。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">private</span> <span class="params">(<span class="keyword">double</span> x)</span></span>;</div><div class="line">…</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">private</span> <span class="params">(<span class="keyword">double</span> x)</span></span>;</div><div class="line">&#123;</div><div class="line">…</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果定义了一个和库函数同名的函数，编译器将采用程序员定义的版本。</p>
+<h4 id="9-2-6-语言链接性-如：函数名翻译"><a href="#9-2-6-语言链接性-如：函数名翻译" class="headerlink" title="9.2.6 语言链接性 (如：函数名翻译)"></a>9.2.6 语言链接性 (如：函数名翻译)</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">extern</span> <span class="string">"C"</span> <span class="function"><span class="keyword">void</span> <span class="title">spiff</span><span class="params">(<span class="keyword">int</span>)</span></span>;</div><div class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">void</span> <span class="title">spoff</span><span class="params">(<span class="keyword">int</span>)</span></span>;</div><div class="line"><span class="keyword">extern</span> <span class="string">"C++"</span> <span class="function"><span class="keyword">void</span> <span class="title">spaff</span><span class="params">(<span class="keyword">int</span>)</span></span>;</div></pre></td></tr></table></figure>
+<p>第一个原型使用C语言链接性，第二个原型默认使用C++链接性，第三个显式使用C++链接性。</p>
+<h4 id="9-2-7-存储方案和动态分配"><a href="#9-2-7-存储方案和动态分配" class="headerlink" title="9.2.7 存储方案和动态分配"></a>9.2.7 存储方案和动态分配</h4><p>在函数中用来跟踪动态内存的自动和静态指针变量遵循之前的存储方案，在函数结束时被释放，而new分配的内存会一直保留在内存当中，如果将指针的链接性声明为外部的，则在文件中后面的函数都可以使用它。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">float</span> *p = <span class="keyword">new</span> <span class="keyword">float</span>[<span class="number">20</span>];</div></pre></td></tr></table></figure></p>
+<h3 id="9-3-布局new操作符"><a href="#9-3-布局new操作符" class="headerlink" title="9.3 布局new操作符"></a>9.3 布局new操作符</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> buffer1[<span class="number">50</span>];</div><div class="line"><span class="keyword">char</span> buffer2[<span class="number">500</span>];</div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">chaff</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">char</span> dross[<span class="number">20</span>];</div><div class="line">       <span class="keyword">int</span> slag;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">       …</div><div class="line">       p2 = <span class="keyword">new</span> (buffer1) chaff;</div><div class="line">       p4 = <span class="keyword">new</span> (buffer2) <span class="keyword">int</span> [<span class="number">20</span>];</div><div class="line">       …</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上述代码中，从<code>buffer1</code>中分配空间给结构<code>chaff</code>，从<code>buffer2</code>中分配空间给一个<code>int</code>数组。</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2012/02/21/2012-02-21-cpp-primer-plus-8/">
+  <time datetime="2012-02-21T00:21:31.000Z">
+    2012-02-21
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2012/02/21/2012-02-21-cpp-primer-plus-8/">C++ PRIMER PLUS (8)</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h2 id="第八章-函数探幽"><a href="#第八章-函数探幽" class="headerlink" title="第八章 函数探幽"></a>第八章 函数探幽</h2><h3 id="8-1-C-内联函数"><a href="#8-1-C-内联函数" class="headerlink" title="8.1 C++内联函数"></a>8.1 C++内联函数</h3><p>内联函数的编译代码与其他程序代码「内联」起来了。也就是说编译器将使用相应的函数代码替换函数调用。对于内联代码，程序无需跳到另一个位置处执行代码，然后再跳回来。因此，内联函数的运行速度比常规函数快，但代价是需要占用更多的内存，因为编译后的可执行程序由一组机器指令组成。运行程序时，操作系统将这些指令载入到计算机内存中。</p>
+<p>内联与宏：宏不能按值传递，比如将(i++)传给宏，只能进行文本复制，而不会计算其值。 </p>
+<h3 id="8-2-引用变量"><a href="#8-2-引用变量" class="headerlink" title="8.2 引用变量"></a>8.2 引用变量</h3><p>引用是已定义变量的别名，他们指向相同的值和内存单元。<br>声明引用时，必须将其初始化。 </p>
+<h4 id="8-2-2-将引用用作函数参数"><a href="#8-2-2-将引用用作函数参数" class="headerlink" title="8.2.2 将引用用作函数参数"></a>8.2.2 将引用用作函数参数</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">( <span class="keyword">int</span> &amp;a, <span class="keyword">int</span> &amp;b)</span></span>;</div><div class="line">swap(wallet1, wallet2);</div></pre></td></tr></table></figure>
+<p>相当于将形参<code>a</code>和<code>b</code>分别初始化为<code>wallet1</code>和<code>wallet2</code>。参数传递给接受引用参数时，实参应是一个变量，而非计算表达式，毕竟引用函数是实参的一个别名。</p>
+<p>仅当参数为<code>const</code>时，C++才允许这样做，C++将生成临时变量。 </p>
+<h4 id="8-2-4-将引用用于结构"><a href="#8-2-4-将引用用于结构" class="headerlink" title="8.2.4 将引用用于结构"></a>8.2.4 将引用用于结构</h4><p>通常，返回机制将被复制到一个临时返回存储单元中，随后调用程序将访问该区域，然而，如果返回值是一个引用，则返回内容将直接复制到变量中，这样做效率更高。</p>
+<p>返回引用时最重要的一点是应避免返回当函数终止时不再存在的内存单元引用。为了避免这种问题，可以返回一个作为参数传递给函数的引用或用new来分配新的存储空间。 </p>
+<p>为何将const用于引用返回类型？</p>
+<p>返回引用为const意味着你不能使用返回的引用直接修改它指向的结构，如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">const</span> xxx &amp; <span class="title">function</span><span class="params">(xxx&amp; temp)</span></span></div><div class="line">&#123;<span class="keyword">return</span> temp;&#125;</div><div class="line">xxx ori;</div><div class="line">xxx aim;</div><div class="line">function(aim) = ori;<span class="comment">// 不允许，但若无const，则可以</span></div></pre></td></tr></table></figure></p>
+<h4 id="8-2-5-将引用用于类对象"><a href="#8-2-5-将引用用于类对象" class="headerlink" title="8.2.5 将引用用于类对象"></a>8.2.5 将引用用于类对象</h4><h4 id="8-2-6-对象，继承和引用"><a href="#8-2-6-对象，继承和引用" class="headerlink" title="8.2.6 对象，继承和引用"></a>8.2.6 对象，继承和引用</h4><p>派生类继承了基类的方法。基类引用可以指向派生类对象，而无需强制类型转换，所以可以定义一个接受基类引用作为参数的函数，调用函数是，可以将基类对象作为参数，也可以将派生类对象作为参数。 </p>
+<h4 id="8-2-7-何时使用引用参数"><a href="#8-2-7-何时使用引用参数" class="headerlink" title="8.2.7 何时使用引用参数"></a>8.2.7 何时使用引用参数</h4><p>传递值而不做修改的函数：</p>
+<ol>
+<li>程序员能够修改调用函数中的数据对象</li>
+<li>通过传递引用而不是整个数据对象可以提高程序运行速度</li>
+<li>如果数据对象很小，如内置数据类型或小型结构，则按值传递</li>
+<li>如果对象时数组，则使用指针，因为这是唯一选择，并将指针声明为指向<code>const</code>的指针</li>
+<li>如果数据对象是较大的结构，则使用<code>const</code>指针或<code>const</code>引用，以提高程序效率。这样可以节省复制结构所需的时间和空间</li>
+<li>如果数据对象是类对象，则使用<code>const</code>引用 </li>
+</ol>
+<p>修改调用函数中数据的函数：</p>
+<ol>
+<li>如果数据对象是内置数据类型，则使用指针</li>
+<li>如果数据对象是数组，则只能使用指针</li>
+<li>如果数据对象是结构，则使用引用或指针</li>
+<li>如果数据对象是类对象，则使用引用 </li>
+</ol>
+<h3 id="8-3-默认参数"><a href="#8-3-默认参数" class="headerlink" title="8.3 默认参数"></a>8.3 默认参数</h3><p>默认参数必须通过函数原型设置。 </p>
+<h3 id="8-4-函数重载"><a href="#8-4-函数重载" class="headerlink" title="8.4 函数重载"></a>8.4 函数重载</h3><p>在函数中，是特征标，而不是函数类型使得可以对函数进行重载。 </p>
+<h3 id="8-5-函数模板"><a href="#8-5-函数模板" class="headerlink" title="8.5 函数模板"></a>8.5 函数模板</h3><h4 id="8-5-2-显示具体化"><a href="#8-5-2-显示具体化" class="headerlink" title="8.5.2 显示具体化"></a>8.5.2 显示具体化</h4><p>当编译器找到与函数调用匹配的具体化定义时，将使用该定义，而不再寻找模板<br>显示具体化原型：<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">template&lt;&gt; void swap&lt;job&gt;(job&amp;, job&amp;);<span class="regexp">//job</span>是一个数据类型</div></pre></td></tr></table></figure></p>
+<p>1.第三代具体化<br>对于给定的函数名，可以有非模板函数、模板函数和显示具体化模板函数以及他们的重载版本；显示具体化的原型和定义应以<code>template&lt;&gt;</code>打头，并通过名称来指出类型；</p>
+<p>具体化将覆盖常规模板，而非模板函数将覆盖具体化和常规模板。</p>
+<p>旧版的C++编译器在具体化时，函数前不加<code>template&lt;&gt;</code>，如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> swap&lt;job&gt;(job&amp;, job&amp;);</div></pre></td></tr></table></figure></p>
+<h4 id="8-5-3-实例化和具体化"><a href="#8-5-3-实例化和具体化" class="headerlink" title="8.5.3 实例化和具体化"></a>8.5.3 实例化和具体化</h4><ul>
+<li>编译器使用模板为特定类型生成函数定义时，得到的是模板实例。</li>
+<li>显示具体化句法是，声明所需种类——用<code>&lt;&gt;</code>符号指示类型，并在声明前加上关键字<code>template</code>； </li>
+<li>显示实例化与显示具体化的区别在于，显示具体化的意思是”不要使用模板来生成函数定义，而用独立的、<br>专门的函数定义为显示地为特定类型的函数定义。而且显示具体化声明在关键字<code>template</code>后包含<code>&lt;&gt;</code>，而显示具体化没有。 </li>
+</ul>
+<h4 id="8-5-4-编译器选择使用哪个函数版本"><a href="#8-5-4-编译器选择使用哪个函数版本" class="headerlink" title="8.5.4 编译器选择使用哪个函数版本"></a>8.5.4 编译器选择使用哪个函数版本</h4><p>第一步：创建候选函数列表，其中包含与被调用函数的名称相同的模板函数<br>第二步：使用候选函数列表创建可行函数列表。</p>
+<ul>
+<li>这些都是参数数目正确的函数，为此有一个隐式转换序列，其中包括实参类型与相应的形参类型完全匹配的情况。例如，使用一个<code>float</code>参数的函数调用可以将该参数转换为<code>double</code>，从而与<code>double</code>形参匹配，而模板可以为<code>float</code>声场一个实例。</li>
+</ul>
+<p>第三步：确定是否有最佳的可行函数。如果有，则使用它，否则该函数调用出错 </p>
+<p>从最佳到最差的顺序如下：</p>
+<ol>
+<li>完全匹配，但常规函数优先于模板</li>
+<li>提升转换(例如，<code>char</code>和<code>shorts</code>自动转换为<code>int</code>，<code>float</code>自动转换为<code>double</code>)</li>
+<li>标准转换(例如，<code>int</code>转换为<code>char</code>，<code>long</code>转换为<code>double</code>)</li>
+<li>用户定义的转换，如类声明中定义的转换。 </li>
+</ol>
+<h3 id="附："><a href="#附：" class="headerlink" title="附："></a>附：</h3><blockquote>
+<p>Page.255：完全匹配和最佳匹配<br>Page.257：有多个参数的函数</p>
+</blockquote>
+<p><em>第八章结束</em></p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2012/01/29/2012-01-29-cpp-primer-plus-7/">
+  <time datetime="2012-01-29T00:21:31.000Z">
+    2012-01-29
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2012/01/29/2012-01-29-cpp-primer-plus-7/">C++ PRIMER PLUS (7)</a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h2 id="第七章-函数——C-编程模块"><a href="#第七章-函数——C-编程模块" class="headerlink" title="第七章 函数——C++编程模块"></a>第七章 函数——C++编程模块</h2><h4 id="7-1-1-定义函数"><a href="#7-1-1-定义函数" class="headerlink" title="7.1.1 定义函数"></a>7.1.1 定义函数</h4><p>如果声明的返回类型是<code>double</code>，而函数返回一个<code>int</code>表达式，则该<code>int</code>值将被强制转换为<code>double</code>类型 </p>
+<h4 id="7-1-2-函数原型和函数调用"><a href="#7-1-2-函数原型和函数调用" class="headerlink" title="7.1.2 函数原型和函数调用"></a>7.1.2 函数原型和函数调用</h4><p>句法：函数原型不要求提供变量名，有类型列表就足够了，如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">(<span class="keyword">int</span>)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>原型用的变量名相当于占位符，因此不必与函数定义中的变量名相同<br>功能：原型确保以下几点：</p>
+<ul>
+<li>编译器正确处理函数的返回值</li>
+<li>编译器检查使用的参数数目是否正确</li>
+<li>编译器检查使用的参数数目是够正确</li>
+</ul>
+<p>通常，原型自动将被传递的参数强制转换为期望的类型。当较大的类型被自动转换为较小的类型时，有些编译器将发出警告，指出这可能会丢失数据 </p>
+<h3 id="7-2-函数参数和按值传递"><a href="#7-2-函数参数和按值传递" class="headerlink" title="7.2 函数参数和按值传递"></a>7.2 函数参数和按值传递</h3><h3 id="7-3-函数和数组"><a href="#7-3-函数和数组" class="headerlink" title="7.3 函数和数组"></a>7.3 函数和数组</h3><p>在C++中，当且仅当用于函数头或函数原型中时，<code>int *arr</code>和<code>int arr[]</code>的含义才是相同的。<br>当指针指向数组的第一个元素时，本书中使用数组表示法；而当指针指向一个独立的值时，使用指针表示法。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">arr[i] == *(ar + i);</div><div class="line">&amp;arr[i] == ar+(i * 指向类型的长度)</div></pre></td></tr></table></figure></p>
+<p>原数组和参数数组指向同一个地址。但<code>sizeof(原数组)</code>为数组大小，而<code>sizeof(参数数组)</code>则为指针变量的大小，这就是必须显示传递数组长度，而不能再函数中使用<code>sizeof()</code>计算的原因；<br>记住：为将数组类型和元素属相告诉数组处理函数，请通过两个不同的参数来传递它们。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">fillArray</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> size)</span></span>; <span class="comment">//prototype</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">fillArray</span><span class="params">(<span class="keyword">int</span> arr[size])</span></span>; <span class="comment">//bad prototype</span></div></pre></td></tr></table></figure></p>
+<h4 id="7-3-5-指针和const"><a href="#7-3-5-指针和const" class="headerlink" title="7.3.5 指针和const"></a>7.3.5 指针和const</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> age = <span class="number">39</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> *pt  = &amp;age;</div></pre></td></tr></table></figure>
+<p>该声明指出，<code>pt</code>指向一个<code>const int(这里是39)</code>，因此不能使用pt来修改这个值，换句话来说，<code>*pt</code>的值为<code>const</code>，不能被修改：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">*pt += <span class="number">1</span>; <span class="comment">//INVALID</span></div><div class="line"><span class="built_in">cin</span> &gt;&gt; *pt; <span class="comment">//INVALID</span></div></pre></td></tr></table></figure></p>
+<p>尽可能使用<code>const</code>，将指针参数声明为指向常量数据的指针有两条理由</p>
+<ol>
+<li>这样可以避免无意间修改数据而导致变成错误;</li>
+<li>使用<code>const</code>使得函数能够处理<code>const</code>和非<code>const</code>实参，否则只能接受非<code>const</code>数据。</li>
+</ol>
+<p>第二种使用<code>const</code>的方式使得无法修改指针的值：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> sloth = <span class="number">3</span>;</div><div class="line"><span class="keyword">int</span> * <span class="keyword">const</span> finger = &amp;sloth;</div></pre></td></tr></table></figure></p>
+<p>这种声明格式使得<code>finger</code>只能指向<code>sloth</code>，但允许使用<code>finger</code>来修改<code>sloth</code>的值。 </p>
+<h3 id="7-4-函数和二维数组"><a href="#7-4-函数和二维数组" class="headerlink" title="7.4 函数和二维数组"></a>7.4 函数和二维数组</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">int sum(int (*arr)[常数], int size);</div><div class="line">int sum(int arr[][常数], int size);</div></pre></td></tr></table></figure>
+<p>处理固定行数，未知列数的二维数据；<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ar2[r][c] == *(*(ar2 + r) + c);</div></pre></td></tr></table></figure></p>
+<h3 id="7-9-函数指针"><a href="#7-9-函数指针" class="headerlink" title="7.9 函数指针"></a>7.9 函数指针</h3><p>与数据项相似，函数也有地址。函数地址是存储机器语言代码的内存的开始地址。 </p>
+<h4 id="7-9-1-函数指针的基础知识"><a href="#7-9-1-函数指针的基础知识" class="headerlink" title="7.9.1 函数指针的基础知识"></a>7.9.1 函数指针的基础知识</h4><ol>
+<li><p>获取函数的地址<br>只要使用函数名即可。也就是说，如果<code>think()</code>是一个函数，则<code>think</code>就是该函数的地址。</p>
+</li>
+<li><p>声明函数指针</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">double</span> <span class="title">pam</span><span class="params">(<span class="keyword">int</span>)</span></span>;</div><div class="line"><span class="keyword">double</span> (*pf)(<span class="keyword">int</span>);</div></pre></td></tr></table></figure>
+<p> 使用该函数指针的函数的原型</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">void estimate(int lines, double(*pf)(int));</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用指针来调用函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">double</span> x = (*pf)(<span class="number">5</span>);</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>注：C++中<code>(*pf)(5)</code>和<code>pf(5)</code>是等价的。 </p>
+<p><em>第七章结束</em></p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/page/2/" class="prev">Prev</a>
+  
+  
+  <div class="clearfix"></div>
+</nav>
+
+</div>
+  </div>
+  
+  <div id="sidebar" class="widgets-bottom">
+  
+<div class="widget category">
+  <h3 class="title">categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/开发工具/">开发工具</a><small>2</small></li>
+  
+    <li><a href="/categories/技术日志/">技术日志</a><small>2</small></li>
+  
+    <li><a href="/categories/流程方法/">流程方法</a><small>3</small></li>
+  
+    <li><a href="/categories/程序开发/">程序开发</a><small>6</small></li>
+  
+    <li><a href="/categories/解题报告/">解题报告</a><small>3</small></li>
+  
+    <li><a href="/categories/读书报告/">读书报告</a><small>14</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">tagcloud</h3>
+  <div class="entry">
+    <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/activemq/" style="font-size: 10px;">activemq</a> <a href="/tags/c/" style="font-size: 18px;">c++</a> <a href="/tags/c-primer-plus/" style="font-size: 18px;">c++ primer plus</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/dispatcher/" style="font-size: 10px;">dispatcher</a> <a href="/tags/gitcafe/" style="font-size: 10px;">gitcafe</a> <a href="/tags/hash/" style="font-size: 12px;">hash</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/homebrew/" style="font-size: 10px;">homebrew</a> <a href="/tags/leetcode/" style="font-size: 14px;">leetcode</a> <a href="/tags/linked-list/" style="font-size: 10px;">linked list</a> <a href="/tags/octopress/" style="font-size: 10px;">octopress</a> <a href="/tags/rails/" style="font-size: 18px;">rails</a> <a href="/tags/rake/" style="font-size: 10px;">rake</a> <a href="/tags/route/" style="font-size: 10px;">route</a> <a href="/tags/ruby/" style="font-size: 10px;">ruby</a> <a href="/tags/tree/" style="font-size: 10px;">tree</a> <a href="/tags/unicorn/" style="font-size: 10px;">unicorn</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/学习报告/" style="font-size: 16px;">学习报告</a> <a href="/tags/工作经验/" style="font-size: 10px;">工作经验</a> <a href="/tags/并发/" style="font-size: 16px;">并发</a> <a href="/tags/并行/" style="font-size: 16px;">并行</a> <a href="/tags/心理/" style="font-size: 14px;">心理</a> <a href="/tags/读书报告/" style="font-size: 20px;">读书报告</a>
+  </div>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">recent_posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2017/04/16/2017-04-16-recent-thinking/">記錄最近的所思所想</a>
+      </li>
+    
+      <li>
+        <a href="/2016/12/28/2016-12-28-2016/">二零一六</a>
+      </li>
+    
+      <li>
+        <a href="/2016/11/11/2016-11-11-cpp-brief-history/">C++ 简史</a>
+      </li>
+    
+      <li>
+        <a href="/2016/05/18/2016-05-18-charlie-munger-on-the-psychology-of-human-misjudgment-three/">人类误判心理（3）</a>
+      </li>
+    
+      <li>
+        <a href="/2015/11/13/2015-11-13-the-core-value-of-sde/">软件工程师的核心价值</a>
+      </li>
+    
+  </ul>
+</div>
+
+</div>
+  
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2017 <a href="/">Bai, Yu</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://blog.dafengning.com/" target="_blank">Chong Zi</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//lib.sinaapp.com/js/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var disqus_shortname = 'everkeyword';
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  }());
+</script>
+
+
+<div id="rightfix" style="display:none;">
+
+
+<a href="javascript:void(0)" id="gotop" class="fix_btn" onclick="gotop();" title="回到顶部"><i></i></a>
+<script>
+  function gotop(){
+    $('html,body').animate({
+        scrollTop : '0px'
+      }, 800);
+  }
+  $(function(){
+    _rightfix = $('#rightfix');
+    $(window).scroll(function(){
+      $sollTop = document.documentElement.scrollTop + document.body.scrollTop;
+      if($sollTop > 350){
+        _rightfix.show();
+      }else{
+        _rightfix.hide();
+      }
+    });
+  });
+</script>
+
+</div>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>
