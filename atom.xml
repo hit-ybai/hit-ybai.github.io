@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.everkeyword.com/"/>
-  <updated>2017-05-02T14:29:00.000Z</updated>
+  <updated>2017-05-02T17:39:32.000Z</updated>
   <id>http://www.everkeyword.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.everkeyword.com/2016/05/18/2016-05-18-charlie-munger-on-the-psychology-of-human-misjudgment-three/"/>
     <id>http://www.everkeyword.com/2016/05/18/2016-05-18-charlie-munger-on-the-psychology-of-human-misjudgment-three/</id>
     <published>2016-05-18T01:19:27.000Z</published>
-    <updated>2017-05-02T14:29:00.000Z</updated>
+    <updated>2017-05-02T17:39:32.000Z</updated>
     
     <content type="html"><![CDATA[<p>作者：查理·芒格</p>
 <h3 id="Third-incentive-cause-bias-both-in-one’s-own-mind-and-that-of-ones-trusted-advisor-where-it-creates-what-economists-call-‘agency-costs-’"><a href="#Third-incentive-cause-bias-both-in-one’s-own-mind-and-that-of-ones-trusted-advisor-where-it-creates-what-economists-call-‘agency-costs-’" class="headerlink" title="Third: incentive-cause bias, both in one’s own mind and that of ones trusted advisor, where it creates what economists call ‘agency costs.’"></a>Third: incentive-cause bias, both in one’s own mind and that of ones trusted advisor, where it creates what economists call ‘agency costs.’</h3><p><strong>第三条：由激励导致的偏见，同时存在于每个人和其所信赖的顾问的脑海中，它造就了经济学家所谓的「代理成本」（agency costs）</strong></p>
@@ -552,11 +552,11 @@
   </entry>
   
   <entry>
-    <title>从Octopress迁移到Hexo</title>
+    <title>Hexo</title>
     <link href="http://www.everkeyword.com/2015/06/13/2015-06-13-octopress2hexo/"/>
     <id>http://www.everkeyword.com/2015/06/13/2015-06-13-octopress2hexo/</id>
     <published>2015-06-13T06:55:27.000Z</published>
-    <updated>2017-05-02T14:28:51.000Z</updated>
+    <updated>2017-05-02T17:39:10.000Z</updated>
     
     <content type="html"><![CDATA[<p>前阵子有幸地参与到一个 Road Map Project 从无到有的开发过程，整个项目做下来，感触很多。随着项目进入收官阶段，可以自由支配的时间渐渐多一些，准备有规律地更新博文。</p>
 <p><img src="http://7xjra1.com1.z0.glb.clouddn.com/galaxy_soho_sky.jpg" alt="难得一见的北京蓝"></p>
@@ -713,11 +713,11 @@
   </entry>
   
   <entry>
-    <title>sudo brew install</title>
+    <title>Homebrew</title>
     <link href="http://www.everkeyword.com/2015/01/09/2015-01-09-donot-sudo-brew/"/>
     <id>http://www.everkeyword.com/2015/01/09/2015-01-09-donot-sudo-brew/</id>
     <published>2015-01-09T01:34:22.000Z</published>
-    <updated>2017-05-02T14:26:39.000Z</updated>
+    <updated>2017-05-02T17:38:50.000Z</updated>
     
     <content type="html"><![CDATA[<p>近些天来一直受到一个问题的困扰，在执行<code>activemq start</code>后，能够看到进程已经启动，然而根本没有什么卵用，完全连不上<code>localhost:8161/admin/</code>。改成<code>sudo activemq start</code>，问题就解决了。</p>
 <p>今天终于发现了问题的原因：当初我在用<code>brew</code>安装<code>activemq</code>的时候就是用的是：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo brew install activemq</div></pre></td></tr></table></figure></p>
@@ -742,11 +742,11 @@
   </entry>
   
   <entry>
-    <title>关于Everkeyword</title>
+    <title>关于 Everkeyword</title>
     <link href="http://www.everkeyword.com/2015/01/04/2015-01-04-always-wirting/"/>
     <id>http://www.everkeyword.com/2015/01/04/2015-01-04-always-wirting/</id>
     <published>2015-01-04T15:06:48.000Z</published>
-    <updated>2017-05-02T14:30:09.000Z</updated>
+    <updated>2017-05-02T17:38:38.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="为什么叫Everkeyword"><a href="#为什么叫Everkeyword" class="headerlink" title="为什么叫Everkeyword"></a>为什么叫Everkeyword</h3><p>学生时期，比较爱想，有过一个创业的Idea。当时就觉得Everkeyword这个名字非常适合想象中的“产品”。从那时候开始，就一直想把这个域名注册下来。</p>
 <h3 id="Everkeyword是做什么的"><a href="#Everkeyword是做什么的" class="headerlink" title="Everkeyword是做什么的"></a>Everkeyword是做什么的</h3><p>Everkeyword现在是我的个人技术博客，而不再是那个产品。我会在上面分享一些技术方面的心得体会。</p>
