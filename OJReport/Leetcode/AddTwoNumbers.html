@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>LeetCode: Add Two Numbers 解题报告 - 小白的杂货铺</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content="There's no magic in this world."/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#OJReport">OJReport</a>&nbsp;&#187;&nbsp;<a href="/#OJReport-Leetcode">Leetcode</a>&nbsp;&#187;&nbsp;LeetCode: Add Two Numbers 解题报告
+    <span class="updated">Updated&nbsp;
+      2015-06-20 00:10:27 +0800
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">LeetCode: Add Two Numbers 解题报告</div>
+
+  <p><a href="https://leetcode.com/problems/add-two-numbers/">题目描述</a>:
+<em>You are given two linked lists representing two non-negative numbers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.</em></p>
+<p><em>Input: (2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)</em>
+<em>Output: 7 -&gt; 0 -&gt; 8</em></p>
+<hr />
+<p>分析：对两个链表进行带进位求和，若长度不一致填零</p>
+<p>题解：没什么算法，模拟。</p>
+<div class="hlcode"><pre><span class="cp">#include &lt;cstddef&gt;</span>
+
+<span class="k">struct</span> <span class="n">ListNode</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
+    <span class="n">ListNode</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+    <span class="n">ListNode</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="n">val</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">next</span><span class="p">(</span><span class="nb">NULL</span><span class="p">)</span> <span class="p">{}</span>
+<span class="p">};</span>
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">ListNode</span><span class="o">*</span> <span class="n">addTwoNumbers</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">l1</span><span class="p">,</span> <span class="n">ListNode</span><span class="o">*</span> <span class="n">l2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">ans_pointer</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">,</span> <span class="o">*</span><span class="n">ans_head</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+
+        <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">carry_flag</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">sum</span> <span class="o">=</span> <span class="n">getSum</span><span class="p">(</span><span class="n">getNodeVal</span><span class="p">(</span><span class="n">l1</span><span class="p">),</span> <span class="n">getNodeVal</span><span class="p">(</span><span class="n">l2</span><span class="p">),</span> <span class="n">carry_flag</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">ans_pointer</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">ans_pointer</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">sum</span><span class="p">);</span>
+                <span class="n">ans_pointer</span>       <span class="o">=</span> <span class="n">ans_pointer</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="n">ans_head</span>    <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">sum</span><span class="p">);</span>
+                <span class="n">ans_pointer</span> <span class="o">=</span> <span class="n">ans_head</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">nextPointer</span><span class="p">(</span><span class="n">l1</span><span class="p">);</span>
+            <span class="n">nextPointer</span><span class="p">(</span><span class="n">l2</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span><span class="n">l1</span> <span class="o">||</span> <span class="n">l2</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">carry_flag</span><span class="p">)</span> <span class="p">{</span> <span class="n">ans_pointer</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">ans_head</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="nl">private:</span>
+    <span class="kt">int</span> <span class="n">getNodeVal</span><span class="p">(</span><span class="k">const</span> <span class="n">ListNode</span><span class="o">*</span> <span class="k">const</span> <span class="n">node</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">node</span> <span class="o">?</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">getSum</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="n">val1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">val2</span><span class="p">,</span> <span class="kt">bool</span> <span class="o">&amp;</span><span class="n">carry_flag</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">val1</span> <span class="o">+</span> <span class="n">val2</span> <span class="o">+</span> <span class="n">carry_flag</span><span class="p">;</span>
+        <span class="n">carry_flag</span> <span class="o">=</span> <span class="p">(</span><span class="n">sum</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">sum</span> <span class="o">%</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">nextPointer</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="o">&amp;</span><span class="n">node</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">node</span> <span class="o">?</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">:</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2017 Y. Bai.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2017-05-05 00:56:47</p>
+      </span>
+    </div>
+  </body>
+</html>

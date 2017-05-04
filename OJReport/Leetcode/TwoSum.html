@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>LeetCode: Two Sum 解题报告 - 小白的杂货铺</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content="There's no magic in this world."/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#OJReport">OJReport</a>&nbsp;&#187;&nbsp;<a href="/#OJReport-Leetcode">Leetcode</a>&nbsp;&#187;&nbsp;LeetCode: Two Sum 解题报告
+    <span class="updated">Updated&nbsp;
+      2015-06-19 23:55:27 +0800
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">LeetCode: Two Sum 解题报告</div>
+
+  <p><a href="https://leetcode.com/problems/two-sum/">题目描述</a>:
+<em>Given an array of integers, find two numbers such that they add up to a specific target number.</em></p>
+<p><em>The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.</em></p>
+<p><em>You may assume that each input would have exactly one solution.</em></p>
+<p><em>Input: numbers={2, 7, 11, 15}, target=9</em>
+<em>Output: index1=1, index2=2</em></p>
+<hr />
+<p>分析：题中要求找到数组<code>number</code>中“和”为<code>target</code>的两个元素对应的索引。</p>
+<p>题解：首先构造一个<code>Hash{ value-&gt;idx }</code>，之后遍历每个元素<code>Numbers[i]</code>对应的<code>Target - Numbers[i]</code>是否在<code>Hash Table</code>中，若存在则输出解。</p>
+<div class="hlcode"><pre><span class="cp">#include &lt;vector&gt;</span>
+<span class="cp">#include &lt;unordered_map&gt;</span>
+
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">twoSum</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">numbers</span><span class="p">,</span> <span class="kt">int</span> <span class="n">target</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">num_idx_map</span><span class="p">;</span>
+        <span class="k">auto</span> <span class="n">n</span> <span class="o">=</span> <span class="n">numbers</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">num_idx_map</span><span class="p">[</span><span class="n">numbers</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">num_idx_map</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">target</span> <span class="o">-</span> <span class="n">numbers</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="n">num_idx_map</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+                <span class="kt">int</span> <span class="n">current_num_idx</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="kt">int</span> <span class="n">match_num_idx</span>   <span class="o">=</span> <span class="n">num_idx_map</span><span class="p">[</span><span class="n">target</span> <span class="o">-</span> <span class="n">numbers</span><span class="p">[</span><span class="n">i</span><span class="p">]];</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">match_num_idx</span> <span class="o">!=</span> <span class="n">current_num_idx</span><span class="p">)</span> <span class="k">return</span> <span class="p">{</span> <span class="n">current_num_idx</span><span class="p">,</span>  <span class="n">match_num_idx</span> <span class="p">};</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2017 Y. Bai.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2017-05-05 00:56:47</p>
+      </span>
+    </div>
+  </body>
+</html>
