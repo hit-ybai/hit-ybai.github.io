@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/tango.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>B-Tree - White</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    <div id="container">
+      
+<div id="header">
+  <div class="post-nav"><a href="/">Home</a>&nbsp;&#187;&nbsp;<a href="/#algorithm">algorithm</a>&nbsp;&#187;&nbsp;B-Tree
+    <span class="updated">Updated&nbsp;
+      2015-10-15 18:55:27 +0800
+    </span></div>
+</div>
+<div class="clearfix"></div>
+
+<div class="page_title">B-Tree</div>
+
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">简介</a></li>
+<li><a href="#_2">基本操作</a><ul>
+<li><a href="#b-tree-search">B-TREE-SEARCH</a></li>
+<li><a href="#b-tree-create">B-TREE-CREATE</a></li>
+<li><a href="#_3">插入关键字</a></li>
+<li><a href="#b-tree-split-child">B-TREE-SPLIT-CHILD</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="_1">简介</h1>
+<p>如果一个内部节点 <em>X</em> 包含了 <em>n</em> 个有序关键字，那么节点 <em>X</em> 有 <em>n + 1</em> 个子节点，每个叶节点有相同的深度即树的高度。</p>
+<p>节点 <em>X</em> 由其关键字分隔为 <em>n + 1</em> 个子域，每个子域和一个子树相对应。在对一个关键字进行搜索时，会通过比较节点中关键字，进行 <em>n + 1</em> 路选择遍历查找。</p>
+<p><img alt="B-Tree" src="http://7xjra1.com1.z0.glb.clouddn.com/b-tree.png" /></p>
+<p>节点中关键字的个数存在上下界，用<code>B-Tree</code>的最小度数 <em>t &gt;= 2</em> 来表示。非根节点至少有 <em>t - 1</em> 个关键字，即有 <em>t</em> 棵子树；至多有 <em>2t - 1</em> 个关键字，即有 <em>2t</em> 棵子树，这时我们称这个节点是满的。当 <em>t = 2</em> 时，每个内部节点有 2 个、 3 个或 4 个子树，即一棵 <em>2-3-4 树</em>。</p>
+<h1 id="_2">基本操作</h1>
+<h2 id="b-tree-search">B-TREE-SEARCH</h2>
+<p><code>class BTree</code></p>
+<div class="hlcode"><pre>  <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">b_tree_search</span><span class="p">(</span><span class="vi">@root</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">b_tree_search</span><span class="p">(</span><span class="n">node</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">,</span> <span class="n">search_key</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kp">nil</span> <span class="k">unless</span> <span class="n">node</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">idx</span><span class="o">|</span>
+      <span class="k">return</span> <span class="o">[</span><span class="n">node</span><span class="p">,</span> <span class="n">idx</span><span class="o">]</span> <span class="k">if</span> <span class="n">search_key</span> <span class="o">==</span> <span class="n">key</span>
+      <span class="k">next</span> <span class="k">if</span> <span class="n">search_key</span> <span class="o">&gt;</span> <span class="n">key</span>
+      <span class="n">b_tree_search</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">child</span><span class="o">[</span><span class="n">idx</span><span class="o">]</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+      <span class="k">break</span>
+    <span class="k">end</span>
+    <span class="n">b_tree_search</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">last</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="kp">nil</span>
+  <span class="k">end</span>
+</pre></div>
+
+
+<h2 id="b-tree-create">B-TREE-CREATE</h2>
+<p><code>class Node</code></p>
+<div class="hlcode"><pre>  <span class="k">def</span> <span class="nf">initialize</span>
+    <span class="vi">@leaf</span>  <span class="o">=</span> <span class="kp">true</span>
+    <span class="vi">@keys</span>  <span class="o">=</span> <span class="o">[]</span>
+    <span class="vi">@child</span> <span class="o">=</span> <span class="o">[]</span>
+  <span class="k">end</span>
+</pre></div>
+
+
+<p><code>class BTree</code></p>
+<div class="hlcode"><pre>  <span class="k">def</span> <span class="nf">initialize</span>
+    <span class="vi">@root</span> <span class="o">=</span> <span class="no">Node</span><span class="o">.</span><span class="n">new</span>
+  <span class="k">end</span>
+</pre></div>
+
+
+<h2 id="_3">插入关键字</h2>
+<p>我们无法直接新建一个叶节点，把关键字插入其中（这样的<code>B-Tree</code>可能是不合法的），所以我们会把新的关键字插入到已有的节点中。不过这样可能会导致一个节点关键字的数量超过它的上界，所以我们引入一个新的操作：分裂<code>B-Tree</code>中的节点。</p>
+<h2 id="b-tree-split-child">B-TREE-SPLIT-CHILD</h2>
+<p><img alt="B-TREE-SPLIT-CHILD" src="http://7xjra1.com1.z0.glb.clouddn.com/b-tree-split-child.png" />
+<code>class BTree</code></p>
+<div class="hlcode"><pre>  <span class="k">def</span> <span class="nf">b_tree_split_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+    <span class="n">new_child</span> <span class="o">=</span> <span class="no">Node</span><span class="o">.</span><span class="n">new</span>
+    <span class="n">old_child</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">child</span><span class="o">[</span><span class="n">pos</span><span class="o">]</span>
+
+    <span class="n">new_child</span><span class="o">.</span><span class="n">leaf</span>  <span class="o">=</span> <span class="n">old_child</span><span class="o">.</span><span class="n">leaf</span>
+    <span class="n">new_child</span><span class="o">.</span><span class="n">keys</span>  <span class="o">=</span> <span class="n">old_child</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="vi">@t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">new_child</span><span class="o">.</span><span class="n">child</span> <span class="o">=</span> <span class="n">old_child</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="vi">@t</span><span class="p">)</span>
+
+    <span class="n">node</span><span class="o">.</span><span class="n">insert_child</span><span class="p">(</span> <span class="n">new_child</span><span class="p">,</span> <span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">insert_key</span><span class="p">(</span> <span class="n">old_child</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">pop</span><span class="p">,</span> <span class="n">pos</span> <span class="p">)</span>
+  <span class="k">end</span>
+</pre></div>
+    </div>
+    <div id="footer">
+      <span>
+        <p>Copyright © 2017 Y. Bai.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.</p>
+        <p>Site Generated 2017-05-04 22:08:25</p>
+      </span>
+    </div>
+  </body>
+</html>
